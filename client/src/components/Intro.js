@@ -3,13 +3,19 @@ import "./components.css";
 
 class Intro extends React.Component {
   state = {
-    register: 1
+    register: 1,
+    isStudent: false
   };
 
   handleLogin = e => {
     e.preventDefault();
     this.setState({ register: 1 });
   };
+
+  handleCheck = () => {
+    this.setState({ isStudent: !this.state.isStudent });
+  };
+
   render() {
     if (this.state.register === 0) {
       return (
@@ -27,6 +33,7 @@ class Intro extends React.Component {
               <br />
               <input type="submit" value="Login" id="loginButton" />
             </form>
+            <br />
             <label>
               Don't have an account? register{" "}
               <a href="" onClick={this.handleLogin}>
@@ -39,11 +46,13 @@ class Intro extends React.Component {
     }
     if (this.state.register === 1) {
       return (
-        <div>
+        <div className="form">
           <div class="cardReg">
             <div class="card-body">
               <strong>
-                <h2 class="card-title">Register to Gitam Directory.</h2>
+                <h4 class="card-title">
+                  Register to Gitam Directory. Its Free!
+                </h4>
               </strong>
               <form id="registerForm">
                 <input type="text" placeholder="Name" id="pass" />
@@ -62,26 +71,7 @@ class Intro extends React.Component {
                 />
                 <br />
                 <br />
-                <input type="text" placeholder="Degree Undertaken" id="pass" />
-                <input
-                  type="number"
-                  max="5"
-                  min="1"
-                  placeholder="Year of Study"
-                  id="pass"
-                />
-                <br />
-                <br />
-                <input type="text" placeholder="Section" id="pass" />
 
-                <input
-                  type="number"
-                  name=""
-                  id="pass"
-                  placeholder="Roll Number"
-                />
-                <br />
-                <br />
                 <div>
                   <label id="gen">You are </label>
                   <select name="gender" id="gender">
@@ -91,9 +81,55 @@ class Intro extends React.Component {
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                   </select>
+                  <br />
                 </div>
+
+                <label class="checkbox-inline">
+                  Are you a Student ?{" "}
+                  <input
+                    type="checkbox"
+                    value=""
+                    id="check"
+                    onClick={this.handleCheck}
+                  />
+                </label>
                 <br />
-                <input type="text" placeholder="Location" />
+
+                {this.state.isStudent === true && (
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Degree Undertaken"
+                      id="pass"
+                    />
+                    <input
+                      type="number"
+                      max="5"
+                      min="1"
+                      placeholder="Year of Study"
+                      id="pass"
+                    />
+                    <br />
+                    <br />
+                    <input type="text" placeholder="Section" id="pass" />
+                    <input
+                      type="number"
+                      name=""
+                      id="pass"
+                      placeholder="Roll Number"
+                    />
+                    <br />
+                  </div>
+                )}
+
+                {this.state.isStudent === false && (
+                  <div>
+                    <input type="text" placeholder="Designation at Gitam" />
+                  </div>
+                )}
+
+                <br />
+                <input type="text" placeholder="Where do u live ?" />
                 <br />
                 <br />
                 <input

@@ -49,7 +49,7 @@ input {
   text-align: center;
 }
 
-input[type="radio"] {
+input[type="checkbox"] {
   display: inline;
   margin-right: 5px;
 }
@@ -58,10 +58,25 @@ input[type="radio"] {
   margin-right: 10px;
 }
 
+#check {
+  width: 20px;
+}
 #gender {
   text-align: center;
   border: 1px solid black;
 }
+
+*:focus {
+  outline: none;
+}
+
+@media only screen and (max-width: 470px) {
+  .card,
+  .cardReg {
+    width: 10rem;
+  }
+}
+
 @media only screen and (max-width: 600px) {
   .card,
   .cardReg {
