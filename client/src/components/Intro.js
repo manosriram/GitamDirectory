@@ -1,78 +1,118 @@
 import React from "react";
+import "./components.css";
 
 class Intro extends React.Component {
   state = {
-    login: 0
+    register: 1
   };
 
-  handleLogin = () => {
-    this.setState({ login: 1 }, () => console.log(this.state));
+  handleLogin = e => {
+    e.preventDefault();
+    this.setState({ register: 1 });
   };
-
   render() {
-    if (this.state.login === 0) {
+    if (this.state.register === 0) {
       return (
-        <div>
-          <div id="introForm">
-            <form>
-              <h1>Sign-Up</h1>
-              <br />
-              <input type="text" placeholder="name" />
-              <br />
-              <br />
-              <input type="text" placeholder="email" />
+        <div class="card">
+          <div class="card-body">
+            <strong>
+              <h2 class="card-title">Login to Gitam Directory.</h2>
+            </strong>
+            <form id="loginForm">
+              <input type="email" placeholder="Email Address" />
               <br />
               <br />
-              <input className="col-xs-3" type="text" placeholder="password" />
+              <input type="password" placeholder="Password" />
               <br />
               <br />
-              <input
-                className="col-xs-4 col-xs-offset-2"
-                type="text"
-                placeholder="repeat-password"
-              />
-              <br />
-              <br />
-              <input type="text" placeholder="degree" />
-              <br />
-              <br />
-              <input type="text" placeholder="year of study" />
-              <br />
-              <br />
-              <input type="submit" value="Register" id="registerButton" />
-              <h5>or</h5>
+              <input type="submit" value="Login" id="loginButton" />
             </form>
-            <a href="#" onClick={this.handleLogin}>
-              Login
-            </a>
-            <br />
-          </div>
-
-          <div id="vertHR" />
-
-          <div id="floatLeftDiv">
-            <h2>
-              Get all the Status updates from your friends, teachers and clubs
-              instantly!
-            </h2>
+            <label>
+              Don't have an account? register{" "}
+              <a href="" onClick={this.handleLogin}>
+                here
+              </a>
+            </label>
           </div>
         </div>
       );
     }
-    if (this.state.login === 1) {
+    if (this.state.register === 1) {
       return (
         <div>
-          <form id="loginForm">
-            <hr />
-            <input type="text" placeholder="email" />
-            <br />
-            <br />
-            <input type="text" placeholder="password" />
-            <br />
-            <br />
-            <input type="submit" value="login" id="loginButton" />
-            <hr />
-          </form>
+          <div class="cardReg">
+            <div class="card-body">
+              <strong>
+                <h2 class="card-title">Register to Gitam Directory.</h2>
+              </strong>
+              <form id="registerForm">
+                <input type="text" placeholder="Name" id="pass" />
+                <input
+                  type="email"
+                  placeholder="Gitam Email Address"
+                  id="pass"
+                />
+                <br />
+                <br />
+                <input type="password" placeholder="Password" id="pass" />
+                <input
+                  type="password"
+                  placeholder="Confirm Password"
+                  id="pass"
+                />
+                <br />
+                <br />
+                <input type="text" placeholder="Degree Undertaken" id="pass" />
+                <input
+                  type="number"
+                  max="5"
+                  min="1"
+                  placeholder="Year of Study"
+                  id="pass"
+                />
+                <br />
+                <br />
+                <input type="text" placeholder="Section" id="pass" />
+
+                <input
+                  type="number"
+                  name=""
+                  id="pass"
+                  placeholder="Roll Number"
+                />
+                <br />
+                <br />
+                <div>
+                  <label id="gen">You are </label>
+                  <select name="gender" id="gender">
+                    <option value="" selected disabled hidden>
+                      Choose
+                    </option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                </div>
+                <br />
+                <input type="text" placeholder="Location" />
+                <br />
+                <br />
+                <input
+                  type="number"
+                  max="118"
+                  min="16"
+                  placeholder="Age"
+                  name="Age"
+                />
+                <br />
+                <label>Date of Birth</label>
+                <br />
+                <input type="date" placeholder="BirthDate" />
+                <br />
+                <br />
+                <input type="submit" value="Register" id="loginButton" />
+              </form>
+            </div>
+          </div>
         </div>
       );
     }
