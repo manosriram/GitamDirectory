@@ -29,6 +29,18 @@ const UserSchema = new Schema({
   },
   branch: {
     type: String
+  },
+  designation: {
+    type: String
+  },
+  age: {
+    type: Number
+  },
+  degree: {
+    type: String
+  },
+  section: {
+    type: String
   }
 });
 
