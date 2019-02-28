@@ -7,9 +7,13 @@ const key = require("./setup/url").secret;
 const cookieparser = require("cookie-parser");
 const session = require("express-session");
 const port = process.env.PORT || 5000;
+const passport = require("passport");
 
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
+
+// Passport Config
+require("./config/passport")(passport);
 
 app.use(
   session({
@@ -23,6 +27,10 @@ app.use(
   })
 );
 
+// Passport MiddleWare
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(cookieparser());
 app.use("/myuploads", express.static("./public/myuploads/"));
 
@@ -31,6 +39,7 @@ mongoose
   .then(() => console.log("MongoDB Connected Succesfully!"))
   .catch(err => console.log(err));
 
+app.use("/auth", require("./routes/auth"));
 app.get("/", (req, res) => {
   res.send("Hello, World!!");
 });
