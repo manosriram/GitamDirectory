@@ -29,7 +29,7 @@ input {
 .cardReg {
   background: white;
   width: 30rem;
-  height: 35rem;
+  height: 38rem;
   margin: 0 auto;
   float: none;
   margin-bottom: 10px;
@@ -42,10 +42,10 @@ input {
   left: 0;
 }
 
-#pass {
+.pass {
   width: 190px;
 }
-#pass::placeholder {
+.pass::placeholder {
   text-align: center;
 }
 
@@ -85,6 +85,11 @@ input[type="checkbox"] {
   left: 0;
 }
 
+#divEr {
+  margin-left: auto;
+  margin-right: auto;
+  width: 20;
+}
 @media only screen and (max-width: 470px) {
   .card,
   .cardReg {

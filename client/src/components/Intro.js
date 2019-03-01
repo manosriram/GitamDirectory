@@ -77,11 +77,12 @@ class Intro extends React.Component {
         msg: "Section must not be greater than 4 characters long."
       });
     else if (age < 16) errors.push({ msg: "Age requirements not satisfied." });
-    else if (designation.length < 3)
+    else if (designation.length < 3 && !this.state.isStudent)
       errors.push({ msg: "Designation must be atleast 4 characters long." });
     else if (gender === "") errors.push({ msg: "Please Select Your Gender." });
     else if (date === "") errors.push({ msg: "Date required" });
     if (errors.length > 0) this.setState({ errorCode: 1, errorsA: errors });
+    else this.setState({ errorCode: 0 });
     // else make post request and create an account by verifying the email..
   };
 
@@ -115,14 +116,7 @@ class Intro extends React.Component {
     }
     if (this.state.register === 1) {
       return (
-        <div className="form" onChange={this.handleChange}>
-          {this.state.errorsA.length > 0 && (
-            <div className="alert alert-danger">
-              {this.state.errorsA.map((el, ind) => {
-                return <h3>{el.msg}</h3>;
-              })}
-            </div>
-          )}
+        <div className="form" onChange={this.handleChange} id="divError">
           <div class="cardReg">
             <div class="card-body">
               <strong>
@@ -131,11 +125,16 @@ class Intro extends React.Component {
                 </h4>
               </strong>
               <form id="registerForm">
-                <input type="text" placeholder="Name" id="pass" name="name" />
+                <input
+                  type="text"
+                  placeholder="Name"
+                  className="pass"
+                  name="name"
+                />
                 <input
                   type="email"
                   placeholder="Gitam Email Address"
-                  id="pass"
+                  className="pass"
                   name="email"
                 />
                 <br />
@@ -143,13 +142,13 @@ class Intro extends React.Component {
                 <input
                   type="password"
                   placeholder="Password"
-                  id="pass"
+                  className="pass"
                   name="pass"
                 />
                 <input
                   type="password"
                   placeholder="Confirm Password"
-                  id="pass"
+                  className="pass"
                   name="confirmPass"
                 />
                 <br />
@@ -250,6 +249,12 @@ class Intro extends React.Component {
                   onClick={this.handleRegisterSubmit}
                 />
               </form>
+              <br />
+              {this.state.errorsA.length > 0 && (
+                <div className="alert alert-danger" id="divEr">
+                  <h2>Please Fill all the Details.</h2>
+                </div>
+              )}
             </div>
           </div>
         </div>
