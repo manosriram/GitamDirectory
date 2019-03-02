@@ -1,10 +1,11 @@
 import React from "react";
 import "./components.css";
+const axios = require("axios");
 
 class Intro extends React.Component {
   state = {
     errorCode: 0,
-    register: 1,
+    register: 0,
     isStudent: false,
     name: "",
     email: "",
@@ -19,7 +20,25 @@ class Intro extends React.Component {
     location: "",
     age: 0,
     designation: "",
-    errorsA: []
+    errorsA: [],
+    isRegistered: -1
+  };
+
+  handleLoginChange = async e => {
+    e.preventDefault();
+
+    const { email, password } = this.state;
+    const load = { email: email, password: password };
+    const res = await fetch("/auth/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(load)
+    });
+    const resJ = await res.json();
+    console.log(resJ.data);
   };
 
   handleLogin = e => {
@@ -83,7 +102,39 @@ class Intro extends React.Component {
     else if (date === "") errors.push({ msg: "Date required" });
     if (errors.length > 0) this.setState({ errorCode: 1, errorsA: errors });
     else this.setState({ errorCode: 0 });
+
     // else make post request and create an account by verifying the email..
+    var userInformation = {
+      name,
+      email,
+      pass,
+      confirmPass,
+      gender,
+      degree,
+      section,
+      year,
+      date,
+      roll,
+      location,
+      age,
+      designation,
+      isStudent: this.state.isStudent
+    };
+
+    fetch("/auth/register", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(userInformation)
+    })
+      .then(res => res.json())
+      .then(res =>
+        this.setState({ isRegistered: res.done }, () => {
+          if (this.state.register === 1) this.setState({ register: 0 });
+        })
+      );
   };
 
   render() {
@@ -94,14 +145,19 @@ class Intro extends React.Component {
             <strong>
               <h2 class="card-title">Login to Gitam Directory.</h2>
             </strong>
-            <form id="loginForm">
-              <input type="email" placeholder="Email Address" />
+            <form id="loginForm" onChange={this.handleChange}>
+              <input type="email" placeholder="Email Address" name="email" />
               <br />
               <br />
-              <input type="password" placeholder="Password" />
+              <input type="password" placeholder="Password" name="password" />
               <br />
               <br />
-              <input type="submit" value="Login" id="loginButton" />
+              <input
+                type="submit"
+                value="Login"
+                id="loginButton"
+                onClick={this.handleLoginChange}
+              />
             </form>
             <br />
             <label>
@@ -250,7 +306,7 @@ class Intro extends React.Component {
                 />
               </form>
               <br />
-              {this.state.errorsA.length > 0 && (
+              {this.state.errorsA.length > 0 && this.state.errorCode === 1 && (
                 <div className="alert alert-danger" id="divEr">
                   <h2>Please Fill all the Details.</h2>
                 </div>

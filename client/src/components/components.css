@@ -2,18 +2,11 @@ body {
   background: #2980b9;
 }
 .card {
-  width: 40rem;
-  height: 19rem;
-  margin: 0 auto;
+  background: white;
+  width: 30rem;
   float: none;
-  margin-bottom: 10px;
   border: 3px solid black;
-  position: absolute;
-  margin: auto;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  margin: 210px auto;
 }
 
 input {
@@ -29,16 +22,9 @@ input {
 .cardReg {
   background: white;
   width: 30rem;
-  height: 38rem;
   float: none;
-  margin-bottom: 10px;
   border: 3px solid black;
-  position: absolute;
-  margin: 0 auto;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  margin: 130px auto;
 }
 
 .pass {
@@ -90,12 +76,11 @@ input[type="checkbox"] {
   width: 20;
 }
 @media only screen and (max-width: 470px) {
-  .card,
   .cardReg {
     margin: 0;
     margin-top: 80px;
     width: 1em;
-    /* top: 30; */
+    height: 38rem;
   }
 }
 
@@ -103,5 +88,6 @@ input[type="checkbox"] {
   .card,
   .cardReg {
     width: 30rem;
+    margin: 100px auto;
   }
 }

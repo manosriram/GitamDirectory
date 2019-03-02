@@ -41,6 +41,9 @@ const UserSchema = new Schema({
   },
   section: {
     type: String
+  },
+  isStudent: {
+    type: Boolean
   }
 });
 
