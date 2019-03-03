@@ -1,6 +1,6 @@
 import React from "react";
 import "./components.css";
-const axios = require("axios");
+import LoggedHome from "./LoggedHome";
 
 class Intro extends React.Component {
   state = {
@@ -21,7 +21,23 @@ class Intro extends React.Component {
     age: 0,
     designation: "",
     errorsA: [],
-    isRegistered: -1
+    isRegistered: -1,
+    isLoggedIn: -1,
+    loggedEmail: ""
+  };
+
+  componentDidMount = async () => {
+    const det = await fetch("/auth/getLoginStatus", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      }
+    });
+    var tar = await det.json();
+    if (tar.data.email) {
+      this.setState({ loggedEmail: tar.data.email, isLoggedIn: 1 });
+    }
   };
 
   handleLoginChange = async e => {
@@ -38,7 +54,7 @@ class Intro extends React.Component {
       body: JSON.stringify(load)
     });
     const resJ = await res.json();
-    console.log(resJ.data);
+    this.setState({ isLoggedIn: resJ.done });
   };
 
   handleLogin = e => {
@@ -138,6 +154,10 @@ class Intro extends React.Component {
   };
 
   render() {
+    if (this.state.isLoggedIn === 1) {
+      return <LoggedHome />;
+    }
+
     if (this.state.register === 0) {
       return (
         <div class="card">
@@ -160,12 +180,14 @@ class Intro extends React.Component {
               />
             </form>
             <br />
+            <br />
             <label>
               Don't have an account? register{" "}
               <a href="" onClick={this.handleLogin}>
                 here
               </a>
             </label>
+            {this.state.isLoggedIn === 0 && <h4>not known..</h4>}
           </div>
         </div>
       );

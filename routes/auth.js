@@ -2,9 +2,19 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const jsonwt = require("jsonwebtoken");
+const key = require("../setup/url").secret;
 
 router.get("/", (req, res) => {
   res.send("Hello Auth");
+});
+
+router.post("/getLoginStatus", (req, res) => {
+  jsonwt.verify(req.cookies.auth_t, key, (err, user) => {
+    if (user) {
+      return res.json({ data: user });
+    } else res.json({ data: "" });
+  });
 });
 
 router.post("/register", (req, res) => {
@@ -58,23 +68,30 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
 
-  User.findOne({ email: email }).then(user => {
-    if (!user) {
-      return res.statusCode(404).json({ done: 0 });
-    }
-    console.log(user);
-    var payload = {};
-    payload.name = user.name;
-    payload.email = user.email;
-    payload.location = user.location;
+  User.findOne({ email })
+    .then(user => {
+      if (!user) {
+        return res.json({ done: 0 });
+      }
 
-    if (user.isStudent === false) {
-    }
-    payload.designation = user.designation;
-    payload.age = user.age;
-    payload.year = user.year;
-    // payload.
-  });
+      bcrypt
+        .compare(password, user.password)
+        .then(isCorrect => {
+          if (isCorrect) {
+            var payload = {
+              id: user.id,
+              name: user.name,
+              email: user.email
+            };
+            jsonwt.sign(payload, key, { expiresIn: 9000000 }, (err, token) => {
+              res.cookie("auth_t", token, { maxAge: 90000000 });
+              return res.json({ done: 1 });
+            });
+          }
+        })
+        .catch(err => console.log(err));
+    })
+    .catch(err => console.log(err));
 });
 
 module.exports = router;
