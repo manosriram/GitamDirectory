@@ -77,6 +77,11 @@ input[type="checkbox"] {
 }
 
 /* Navbar  */
+#spinner_1 {
+  margin-top: 100%;
+  margin: auto;
+  background: #3498db;
+}
 
 * {
   margin: 0;

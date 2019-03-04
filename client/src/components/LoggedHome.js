@@ -1,5 +1,5 @@
 import React from "react";
-import "./components.css";
+import "./loggedHome.css";
 const axios = require("axios");
 
 class LoggedHome extends React.Component {
