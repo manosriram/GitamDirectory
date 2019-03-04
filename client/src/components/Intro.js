@@ -1,6 +1,7 @@
 import React from "react";
 import "./components.css";
 import LoggedHome from "./LoggedHome";
+const axios = require("axios");
 
 class Intro extends React.Component {
   state = {
@@ -23,26 +24,24 @@ class Intro extends React.Component {
     errorsA: [],
     isRegistered: -1,
     isLoggedIn: -1,
-    loggedEmail: ""
+    loggedEmail: "",
+    details: {},
+    loading: 1
   };
 
-  componentDidMount = async () => {
-    const det = await fetch("/auth/getLoginStatus", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json"
-      }
-    });
-    var tar = await det.json();
-    if (tar.data.email) {
-      this.setState({ loggedEmail: tar.data.email, isLoggedIn: 1 });
+  componentWillMount = async () => {
+    const tar1 = await axios.post("/auth/getUser");
+    const tar = await tar1;
+    if (tar.data.user1) {
+      this.setState(
+        { details: tar.data.user1, isLoggedIn: 1, loading: 0 },
+        () => console.log(this.state.details)
+      );
     }
   };
 
   handleLoginChange = async e => {
     e.preventDefault();
-
     const { email, password } = this.state;
     const load = { email: email, password: password };
     const res = await fetch("/auth/login", {
@@ -55,6 +54,7 @@ class Intro extends React.Component {
     });
     const resJ = await res.json();
     this.setState({ isLoggedIn: resJ.done });
+    document.location.reload();
   };
 
   handleLogin = e => {
@@ -72,7 +72,7 @@ class Intro extends React.Component {
     });
   };
 
-  handleRegisterSubmit = e => {
+  handleRegisterSubmit = async e => {
     e.preventDefault();
     var errors = [];
     var {
@@ -137,6 +137,9 @@ class Intro extends React.Component {
       isStudent: this.state.isStudent
     };
 
+    const re = await axios.post("/auth/register", { userInformation });
+    const res = await re;
+
     fetch("/auth/register", {
       method: "POST",
       headers: {
@@ -154,8 +157,16 @@ class Intro extends React.Component {
   };
 
   render() {
+    if (this.state.loading === 1) {
+      return (
+        <div class="spinner-border" role="status" id="loader">
+          <span class="sr-only">Loading...</span>
+        </div>
+      );
+    }
+
     if (this.state.isLoggedIn === 1) {
-      return <LoggedHome />;
+      return <LoggedHome data={this.state.details} />;
     }
 
     if (this.state.register === 0) {

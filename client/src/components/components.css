@@ -75,6 +75,77 @@ input[type="checkbox"] {
   margin-right: auto;
   width: 20;
 }
+
+/* Navbar  */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.7em;
+}
+
+a {
+  color: #333;
+  text-decoration: none;
+}
+
+p {
+  margin: 10px 0;
+}
+
+#navbar,
+nav {
+  width: 100% !important;
+  max-height: 70px;
+  overflow: hidden;
+  background: #333;
+  color: white;
+}
+
+#navbar a {
+  color: white;
+}
+
+#navbar h1 {
+  float: left;
+  padding-top: 10px;
+}
+
+#navbar ul {
+  font-size: 20px;
+  list-style: none;
+  float: right;
+}
+
+#navbar ul li {
+  float: left;
+}
+
+#navbar ul li a {
+  display: block;
+  padding: 20px;
+  text-align: center;
+}
+
+#navbar ul li a:hover {
+  background: #444;
+  color: #f7c08a;
+}
+
+/* End of Navbar */
+
+#loader {
+  width: 100px;
+  height: 100px;
+  margin: 130px auto;
+}
+
 @media only screen and (max-width: 470px) {
   .cardReg {
     margin: 0;

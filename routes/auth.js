@@ -9,11 +9,28 @@ router.get("/", (req, res) => {
   res.send("Hello Auth");
 });
 
-router.post("/getLoginStatus", (req, res) => {
+router.post("/getUser", (req, res) => {
   jsonwt.verify(req.cookies.auth_t, key, (err, user) => {
     if (user) {
-      return res.json({ data: user });
+      User.findOne({ email: user.email })
+        .then(user1 => {
+          if (user1) {
+            return res.json({ user1, isLoggedIn: true });
+          }
+        })
+        .catch(err => console.log(err));
     } else res.json({ data: "" });
+  });
+});
+
+router.get("/logout", (req, res) => {
+  jsonwt.verify(req.cookies.auth_t, key, (err, user) => {
+    if (user) {
+      res.clearCookie("auth_t");
+      req.logout();
+    } else {
+      return res.json({ done: 0 });
+    }
   });
 });
 
