@@ -26,6 +26,7 @@ class Intro extends React.Component {
     isRegistered: -1,
     isLoggedIn: false,
     loggedEmail: "",
+    bio: "",
     details: {},
     isSpinning: false
   };
@@ -94,7 +95,8 @@ class Intro extends React.Component {
       roll,
       location,
       age,
-      designation
+      designation,
+      bio
     } = this.state;
 
     let splitE = email.split("@");
@@ -109,7 +111,7 @@ class Intro extends React.Component {
       errors.push({ msg: "Password must be atleast 5 characters long." });
     else if (degree.length < 4 && this.state.isStudent === true)
       errors.push({ msg: "Degree must be atleast 4 characters long." });
-    else if (location.length < 4)
+    else if (location.length < 4 && bio.length < 6)
       errors.push({ msg: "Location must be atleast 4 characters long." });
     else if (roll.length !== 12 && this.state.isStudent === true)
       errors.push({ msg: "Roll Number must be exactly 12 characters long." });
@@ -140,6 +142,7 @@ class Intro extends React.Component {
       location,
       age,
       designation,
+      bio,
       isStudent: this.state.isStudent
     };
 
@@ -277,7 +280,13 @@ class Intro extends React.Component {
                     />
                   </label>
                   <br />
-
+                  <textarea
+                    name=""
+                    id="bio"
+                    cols="25"
+                    rows="5"
+                    placeholder="About You."
+                  />
                   {this.state.isStudent === true && (
                     <div>
                       <input

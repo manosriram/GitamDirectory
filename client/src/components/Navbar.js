@@ -49,7 +49,7 @@ class Navbar extends React.Component {
                     <a href="/">Home</a>
                   </li>
                   <li>
-                    <a href="/">
+                    <a href="/userProfile">
                       <strong> {this.state.details.name}</strong>
                     </a>
                   </li>

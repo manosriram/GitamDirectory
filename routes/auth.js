@@ -48,7 +48,8 @@ router.post("/register", (req, res) => {
     location,
     age,
     designation,
-    isStudent
+    isStudent,
+    bio
   } = req.body;
 
   User.findOne({ email: email }).then(user => {
@@ -65,6 +66,7 @@ router.post("/register", (req, res) => {
         rollNo: roll,
         location: location,
         age: age,
+        bio: bio,
         designation: designation,
         isStudent: isStudent
       });

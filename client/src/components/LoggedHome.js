@@ -6,11 +6,10 @@ class LoggedHome extends React.Component {
   componentDidMount() {
     console.log(this.props);
   }
-  1;
   render() {
     return (
       <div>
-        <h1>Logged in..</h1>
+        <h1>Welcome {this.props.data.name}</h1>
       </div>
     );
   }

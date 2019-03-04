@@ -76,6 +76,14 @@ input[type="checkbox"] {
   width: 20;
 }
 
+#bio {
+  border: 0.5px solid black;
+}
+
+#bio::placeholder {
+  text-align: center;
+}
+
 /* Navbar  */
 #spinner_1 {
   margin-top: 100%;
@@ -156,7 +164,7 @@ nav {
     margin: 0;
     margin-top: 80px;
     width: 1em;
-    height: 38rem;
+    height: 45rem;
   }
 }
 
