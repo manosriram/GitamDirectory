@@ -225,7 +225,6 @@ class Intro extends React.Component {
                   here
                 </a>
               </label>
-              {this.state.isLoggedIn === false && <h4>not known..</h4>}
             </div>
           </div>
         );

@@ -10,13 +10,18 @@ class UserProfile extends React.Component {
     details: {},
     postData: [],
     active: false,
-    isSpinning: false
+    isSpinning: false,
+    isLogged: false
   };
 
   componentWillMount = async () => {
     this.setState({ isSpinning: true });
     const tar1 = await axios.post("/auth/getUser");
     const tar = await tar1;
+
+    if (tar.data.data === "") {
+      this.setState({ isLogged: false });
+    } else this.setState({ isLogged: true });
 
     const postData = await fetch("/api/getAllUserPosts", {
       method: "POST",
@@ -58,6 +63,9 @@ class UserProfile extends React.Component {
         </div>
       );
     } else {
+      if (this.state.isLogged === false) {
+        return (window.location = "/");
+      }
       return (
         <div>
           <div class="sidenav">
