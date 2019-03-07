@@ -3,11 +3,13 @@ import React from "react";
 import "./loggedHome.css";
 import "./components.css";
 const axios = require("axios");
+const moment = require("moment");
 
 class UserProfile extends React.Component {
   state = {
     details: {},
     postData: [],
+    active: false,
     isSpinning: false
   };
 
@@ -25,14 +27,21 @@ class UserProfile extends React.Component {
       body: JSON.stringify(tar.data.user1)
     });
     const result = await postData.json();
+
     if (tar.data.user1) {
       this.setState({
         details: tar.data.user1,
-        postData: result
+        postData: result.reverse()
       });
     }
 
     this.setState({ isSpinning: false });
+  };
+
+  showMore = () => {
+    this.setState({
+      active: !this.state.active
+    });
   };
 
   render() {
@@ -68,18 +77,59 @@ class UserProfile extends React.Component {
             <br />
           </div>
           <div id="postArea">
+            {this.state.postData.length === 0 && <h4>No Posts to show.</h4>}
+            {this.state.postData.length !== 0 && (
+              <h4>All Posts by {this.state.details.name}</h4>
+            )}
+
             {this.state.postData.map((post, postIndex) => {
+              var flag, data;
+              data = post.body;
+              if (post.body.length > 30) {
+                flag = 1;
+              } else {
+                flag = 0;
+              }
+              if (flag === 1) {
+                data = post.body.substring(0, 150) + ` ....`;
+              }
+              if (this.state.active === true) {
+                data = post.body;
+              }
+              var ago = moment(post.timestamp).fromNow();
+
               return (
-                <div id="mainPost">
+                <div>
+                  <br />
+                  <div id="mainPost">
+                    <br />
+                    <br />
+                    <h5 id="postUser" key={postIndex}>
+                      <strong>{this.state.details.name} </strong>({ago})
+                      <br />
+                    </h5>
+                    <br />
+                    <h5 id="postData" key={postIndex + 1}>
+                      {data}
+                    </h5>
+                    <br />
+
+                    <br />
+                    {flag === 1 && this.state.active === false && (
+                      <button key={postIndex + 2} onClick={this.showMore}>
+                        Show More
+                      </button>
+                    )}
+                    {flag === 1 && this.state.active === true && (
+                      <button key={postIndex + 3} onClick={this.showMore}>
+                        Show Less
+                      </button>
+                    )}
+                    <br />
+                    <br />
+                  </div>
                   <br />
                   <br />
-                  <h5 id="postUser" key={postIndex}>
-                    {this.state.details.name}{" "}
-                  </h5>
-                  <br />
-                  <h4 id="postBody">{post.body}</h4>
-                  <br />
-                  <br />;
                 </div>
               );
             })}

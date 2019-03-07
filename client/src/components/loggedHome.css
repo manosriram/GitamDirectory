@@ -2,6 +2,11 @@ body {
   background: white;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+}
+
 *:focus {
   outline: none;
 }
@@ -41,17 +46,26 @@ body {
   border: 0.5px dotted black;
   margin-left: 20%;
   margin-right: 20%;
+  background: beige;
 }
 
 #postUser {
   float: left;
+  margin: 0;
+  padding: 0;
+  margin-top: -50px;
 }
 
 #postBody {
+  width: 100%;
   float: left;
 }
 #postArea {
   padding-top: 5%;
+}
+
+#postData {
+  margin: auto;
 }
 
 /* End of User profile Post */

@@ -31,6 +31,7 @@ class LoggedHome extends React.Component {
       },
       body: JSON.stringify(data)
     });
+    this.setState({ status: "" });
   };
 
   render() {
@@ -46,7 +47,8 @@ class LoggedHome extends React.Component {
             id="postReady"
             cols="100"
             rows="5"
-            placeholder="Update Status."
+            value={this.state.status}
+            placeholder="Update  your  Status."
           />
           <br />
           <input type="submit" value="Post" id="post" />
