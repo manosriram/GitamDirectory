@@ -40,6 +40,7 @@ mongoose
   .catch(err => console.log(err));
 
 app.use("/auth", require("./routes/auth"));
+app.use("/api", require("./routes/api"));
 app.get("/", (req, res) => {
   res.send("Hello, World!!");
 });

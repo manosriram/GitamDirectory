@@ -9,15 +9,19 @@ class Navbar extends React.Component {
   };
 
   componentDidMount = async () => {
-    const res = await fetch("/auth/getUser", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json"
-      }
-    });
-    const re = await res.json();
-    this.setState({ details: re.user1, isLoggedIn: re.isLoggedIn });
+    try {
+      const res = await fetch("/auth/getUser", {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json"
+        }
+      });
+      const re = await res.json();
+      this.setState({ details: re.user1, isLoggedIn: re.isLoggedIn });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   logout = () => {

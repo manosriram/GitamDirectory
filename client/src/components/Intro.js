@@ -31,14 +31,26 @@ class Intro extends React.Component {
     isSpinning: false
   };
 
+  handleFileChange = e => {
+    this.setState({
+      selectedFile: e.target.files[0]
+    });
+  };
+
   componentDidMount = async () => {
     this.setState({ isSpinning: true });
-    const tar1 = await axios.post("/auth/getUser");
-    const tar = await tar1;
-    if (tar.data.user1) {
+    const tar1 = await fetch("/auth/getUser", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      }
+    });
+    const tar = await tar1.json();
+    if (tar.user1) {
       this.setState({
-        details: tar.data.user1,
-        isLoggedIn: tar.data.isLoggedIn
+        details: tar.user1,
+        isLoggedIn: tar.isLoggedIn
       });
     }
     this.setState({ isSpinning: false });
@@ -287,6 +299,14 @@ class Intro extends React.Component {
                     rows="5"
                     placeholder="About You."
                   />
+                  <br />
+                  <input
+                    type="file"
+                    name="profilePic"
+                    id="image"
+                    onChange={this.handleFileChange}
+                  />
+                  <br />
                   {this.state.isStudent === true && (
                     <div>
                       <input

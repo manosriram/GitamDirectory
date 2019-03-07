@@ -47,7 +47,17 @@ const UserSchema = new Schema({
   },
   bio: {
     type: String
-  }
+  },
+  profilePic: {
+    type: String
+  },
+  Posts: [
+    {
+      id: {
+        type: String
+      }
+    }
+  ]
 });
 
 module.exports = User = mongoose.model("myStudent", UserSchema);
