@@ -37,6 +37,8 @@ class LoggedHome extends React.Component {
   render() {
     return (
       <div>
+        <br />
+        <br />
         <h1>Welcome {this.props.data.name}</h1>
         <form
           onChange={this.handleStatusChange}
