@@ -188,6 +188,26 @@ nav {
   margin: 130px auto;
 }
 
+#searchForm {
+  width: 50%;
+  height: 50%;
+  overflow: auto;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+#searchForm input::placeholder {
+  text-align: center;
+}
+
+#searchForm input {
+  width: 50%;
+}
+
 @media only screen and (max-width: 470px) {
   .cardReg {
     margin: 0;

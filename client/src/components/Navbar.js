@@ -1,3 +1,4 @@
+import ShowProfiles from "./ShowProfiles";
 import React from "react";
 import "./components.css";
 const Cookie = require("js-cookie");
@@ -12,26 +13,6 @@ class Navbar extends React.Component {
 
   handleFormChange = e => {
     this.setState({ searchParameter: e.target.value });
-  };
-
-  handleFormSubmit = async event => {
-    event.preventDefault();
-    var data = {
-      parameter: this.state.searchParameter
-    };
-    try {
-      const res = await fetch("/api/getUserProfile", {
-        method: "POST",
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-      });
-      const result = await res.json();
-    } catch (er) {
-      console.log(er);
-    }
   };
 
   componentDidMount = async () => {
@@ -56,6 +37,9 @@ class Navbar extends React.Component {
   };
 
   render() {
+    if (this.state.search === true) {
+      return <ShowProfiles />;
+    }
     return (
       <>
         <header>
@@ -64,7 +48,7 @@ class Navbar extends React.Component {
               <a href="/"> GIT-DIR</a>
             </h1>
 
-            <div class="search-container">
+            {/* <div class="search-container">
               <form onChange={this.handleFormChange}>
                 <input
                   type="text"
@@ -73,8 +57,17 @@ class Navbar extends React.Component {
                   id="searchParameter"
                 />
                 <button onClick={this.handleFormSubmit}>Submit</button>
-              </form>
+              </form> */}
+
+            {/* </div> */}
+            <div>
+              <ul>
+                <li>
+                  <a href="/searchUser">Search</a>
+                </li>
+              </ul>
             </div>
+
             {this.state.isLoggedIn === false && (
               <div>
                 <ul>

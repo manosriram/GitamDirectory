@@ -13,8 +13,11 @@ router.post("/", (req, res) => {
 
 router.post("/getUserProfile", (req, res) => {
   var name = req.body.parameter;
+  var users = [];
   name = name.toLowerCase();
-  User.find({ username: name }).then(people => console.log(people));
+  User.find({ username: name }).then(people => {
+    return res.json({ data: people });
+  });
 });
 
 router.post("/submitStatus", (req, res) => {
