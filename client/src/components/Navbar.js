@@ -5,7 +5,33 @@ const Cookie = require("js-cookie");
 class Navbar extends React.Component {
   state = {
     isLoggedIn: false,
-    details: {}
+    details: {},
+    searchParameter: "",
+    search: false
+  };
+
+  handleFormChange = e => {
+    this.setState({ searchParameter: e.target.value });
+  };
+
+  handleFormSubmit = async event => {
+    event.preventDefault();
+    var data = {
+      parameter: this.state.searchParameter
+    };
+    try {
+      const res = await fetch("/api/getUserProfile", {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+    } catch (er) {
+      console.log(er);
+    }
   };
 
   componentDidMount = async () => {
@@ -31,12 +57,24 @@ class Navbar extends React.Component {
 
   render() {
     return (
-      <div>
+      <>
         <header>
           <nav id="navbar">
             <h1 className="logo">
               <a href="/"> GIT-DIR</a>
             </h1>
+
+            <div class="search-container">
+              <form onChange={this.handleFormChange}>
+                <input
+                  type="text"
+                  placeholder="Search.."
+                  name="searchParameter"
+                  id="searchParameter"
+                />
+                <button onClick={this.handleFormSubmit}>Submit</button>
+              </form>
+            </div>
             {this.state.isLoggedIn === false && (
               <div>
                 <ul>
@@ -67,7 +105,7 @@ class Navbar extends React.Component {
             )}
           </nav>
         </header>
-      </div>
+      </>
     );
   }
 }

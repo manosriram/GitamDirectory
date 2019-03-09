@@ -5,6 +5,9 @@ const UserSchema = new Schema({
   rollNo: {
     type: String
   },
+  username: {
+    type: String
+  },
   name: {
     type: String
   },

@@ -154,10 +154,32 @@ nav {
   background: #444;
   color: #f7c08a;
 }
-
-#searchForm {
-  float: auto;
+.search-container {
+  float: right;
 }
+
+#navbar input[type="text"] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+}
+
+#navbar .search-container button {
+  float: right;
+  padding: 6px;
+  margin-top: 8px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+#navbar .search-container button:hover {
+  background: #ccc;
+}
+
 /* End of Navbar */
 
 #loader {
@@ -180,5 +202,22 @@ nav {
   .cardReg {
     width: 30rem;
     margin: 100px auto;
+  }
+
+  #navbar .search-container {
+    float: none;
+  }
+  #navbar a,
+  #navbar input[type="text"],
+  #navbar .search-container button {
+    float: none;
+    display: block;
+    text-align: left;
+    width: 100%;
+    margin: 0;
+    padding: 14px;
+  }
+  #navbar input[type="text"] {
+    border: 1px solid #ccc;
   }
 }

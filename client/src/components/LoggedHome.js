@@ -1,6 +1,5 @@
 import React from "react";
 import "./loggedHome.css";
-const axios = require("axios");
 
 class LoggedHome extends React.Component {
   state = {

@@ -52,10 +52,13 @@ router.post("/register", (req, res) => {
     bio
   } = req.body;
 
+  var Nname = name.toLowerCase();
+
   User.findOne({ email: email }).then(user => {
     if (!user) {
       const user = new User({
         name: name,
+        username: Nname,
         email: email,
         password: pass,
         gender: gender,

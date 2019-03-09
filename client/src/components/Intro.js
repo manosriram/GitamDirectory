@@ -92,9 +92,12 @@ class Intro extends React.Component {
 
   handleRegisterSubmit = async e => {
     e.preventDefault();
+
     this.setState({ isSpinning: true });
     var errors = [];
+
     var {
+      realName,
       name,
       email,
       pass,
@@ -157,9 +160,6 @@ class Intro extends React.Component {
       bio,
       isStudent: this.state.isStudent
     };
-
-    const re = await axios.post("/auth/register", { userInformation });
-    const res = await re;
 
     fetch("/auth/register", {
       method: "POST",
