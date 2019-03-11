@@ -1,17 +1,44 @@
 import React from "react";
 import "./searchUser.css";
 import Spinner from "react-spinner-material";
+import UserProfile from "./UserProfile";
+import SearchProfile from "./SearchProfile";
 
 class ShowProfiles extends React.Component {
   state = {
+    userPosts: [],
     query: "",
     resultantData: null,
     search: false,
-    isSpinning: false
+    isSpinning: false,
+    redirect: false,
+    data: null
   };
 
   handleFormChange = e => {
     this.setState({ query: e.target.value });
+  };
+
+  searchUser = async e => {
+    e.preventDefault();
+    const name = e.target.name;
+    try {
+      const res1 = await fetch(`/api/getUser/${name}`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name })
+      });
+      const res2 = await res1.json();
+      this.setState(
+        { redirect: true, data: res2.data, userPosts: res2.posts },
+        () => console.log(this.state)
+      );
+    } catch (er) {
+      console.log(er);
+    }
   };
 
   handleFormSubmit = async event => {
@@ -30,7 +57,10 @@ class ShowProfiles extends React.Component {
         body: JSON.stringify(data)
       });
       const result = await res.json();
-      this.setState({ resultantData: result, search: true, isSpinning: false });
+      this.setState(
+        { resultantData: result, search: true, isSpinning: false },
+        () => console.log(this.state)
+      );
     } catch (er) {
       console.log(er);
     }
@@ -47,9 +77,12 @@ class ShowProfiles extends React.Component {
             visible={this.state.isSpinning}
             id="spinner"
           />
-          ;
         </React.Fragment>
       );
+    }
+
+    if (this.state.redirect === true) {
+      return <SearchProfile data={this.state.data} />;
     }
 
     if (this.state.search === false) {
@@ -73,9 +106,26 @@ class ShowProfiles extends React.Component {
     }
     if (this.state.search === true) {
       return (
-        <React.Fragment>
-          <h1>Query!!</h1>
-        </React.Fragment>
+        <div id="fragOK">
+          {this.state.resultantData.data.map((user, id) => {
+            return (
+              <div id="getUser">
+                <a
+                  href="/userProfile"
+                  onClick={this.searchUser}
+                  name={user.email}
+                >
+                  {user.name}
+                </a>
+                <br />
+                {user.email}
+                <br />
+                <p>{user.bio}</p>
+                <br />
+              </div>
+            );
+          })}
+        </div>
       );
     }
   }

@@ -1,5 +1,5 @@
 body {
-  background: white;
+  background: #758aa2;
 }
 
 * {
@@ -75,11 +75,18 @@ body {
 
 #postBox {
   background: beige;
-  border: 1px solid black;
 }
 
 #post {
   width: 10%;
+}
+
+#post:hover {
+  background: beige;
+}
+
+#bio {
+  border: 1px solid black;
 }
 
 textarea {

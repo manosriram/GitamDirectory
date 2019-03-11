@@ -32,6 +32,7 @@ class UserProfile extends React.Component {
       body: JSON.stringify(tar.data.user1)
     });
     const result = await postData.json();
+    console.log(result);
 
     if (tar.data.user1) {
       this.setState({
@@ -145,7 +146,6 @@ class UserProfile extends React.Component {
         </div>
       );
     }
-
     // }
   }
 }

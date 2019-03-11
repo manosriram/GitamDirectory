@@ -22,6 +22,9 @@ class LoggedHome extends React.Component {
       status: this.state.status,
       userData: this.props.data
     };
+    var innerData = document.getElementById("postReady");
+    console.log(innerData);
+    innerData.value = "";
     const res = await fetch("/api/submitStatus", {
       method: "POST",
       headers: {

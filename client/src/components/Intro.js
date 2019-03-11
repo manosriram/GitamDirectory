@@ -292,7 +292,7 @@ class Intro extends React.Component {
                   </label>
                   <br />
                   <textarea
-                    name=""
+                    name="bio"
                     id="bio"
                     cols="25"
                     rows="5"

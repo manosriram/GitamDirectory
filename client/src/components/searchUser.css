@@ -6,3 +6,11 @@ html {
 input {
   height: 50px;
 }
+
+#fragOK {
+  margin-top: 5%;
+}
+
+#getUser {
+  border: 1px solid black;
+}

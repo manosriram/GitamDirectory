@@ -11,6 +11,22 @@ router.post("/", (req, res) => {
   res.send("API POST");
 });
 
+router.post("/getUser/:email", (req, res) => {
+  const email = req.params.email;
+  User.findOne({ email })
+    .then(person => {
+      if (!person) {
+        return res.json({ data: "" });
+      }
+      Post.find({ postBy: person.email })
+        .then(posts => {
+          return res.json({ data: person, posts: posts });
+        })
+        .catch(err => console.log(err));
+    })
+    .catch(er => console.log(er));
+});
+
 router.post("/getUserProfile", (req, res) => {
   var name = req.body.parameter;
   var users = [];
