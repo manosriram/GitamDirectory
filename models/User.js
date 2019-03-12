@@ -60,7 +60,9 @@ const UserSchema = new Schema({
         type: String
       }
     }
-  ]
+  ],
+  follows: [{ id: { type: Number } }],
+  followedBy: [{ id: { type: Number } }]
 });
 
 module.exports = User = mongoose.model("myStudent", UserSchema);

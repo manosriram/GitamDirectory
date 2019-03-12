@@ -7,12 +7,52 @@ const moment = require("moment");
 class SearchProfile extends React.Component {
   state = {
     details: null,
-    postData: []
+    postData: [],
+    following: null
+  };
+
+  followUser = async () => {
+    const res1 = await fetch("/api/followUser", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ user: this.state.details.email })
+    });
+    const res2 = await res1.json();
+    this.setState({ following: res2.followed });
+  };
+
+  unFollowUser = async () => {
+    const res1 = await fetch("/api/unFollowUser", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ user: this.state.details.email })
+    });
+    const res2 = await res1.json();
+    this.setState({ following: res2.unFollowed });
   };
 
   componentWillMount = async () => {
     const email = this.props.data.email;
     this.setState({ details: this.props.data });
+
+    const req1 = await fetch("/api/getFollowStatus", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email })
+    });
+
+    const req2 = await req1.json();
+    this.setState({ following: req2.following });
+
     const res1 = await fetch("/api/getAllUserPosts", {
       method: "POST",
       headers: {
@@ -22,7 +62,6 @@ class SearchProfile extends React.Component {
       body: JSON.stringify({ email })
     });
     const res2 = await res1.json();
-    console.log(res2);
     this.setState({ postData: res2 });
   };
 
@@ -31,6 +70,20 @@ class SearchProfile extends React.Component {
       <React.Fragment>
         <div className="sideNav">
           <h1>{this.state.details.name}</h1>
+          {this.state.following === false && (
+            <h4 id="followBox" onClick={this.followUser}>
+              {" "}
+              Follow
+              <img src="https://img.icons8.com/material/48/000000/add-user-male.png" />
+            </h4>
+          )}
+          {this.state.following === true && (
+            <h4 id="followBox" onClick={this.unFollowUser}>
+              {" "}
+              Following
+              <img src="https://img.icons8.com/ios/50/000000/checked-user-male-filled.png" />
+            </h4>
+          )}
           <br />
           {/* <p>{this.state.details.bio}</p> */}
           <h4 id="bio">{this.state.details.bio}</h4>

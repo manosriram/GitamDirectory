@@ -89,6 +89,17 @@ body {
   border: 1px solid black;
 }
 
+#followBox {
+  margin: auto;
+  width: 10%;
+  border: 1px solid black;
+}
+
+#followBox:hover {
+  background: beige;
+  cursor: pointer;
+}
+
 textarea {
   border: 0.5px solid black;
   width: 60%;

@@ -42,6 +42,8 @@ class LoggedHome extends React.Component {
         <br />
         <br />
         <h1>Welcome {this.props.data.name}</h1>
+        {/* <img src="https://img.icons8.com/material/48/000000/add-user-male.png" /> */}
+        {/* <img src="https://img.icons8.com/ios/50/000000/checked-user-male-filled.png" /> */}
         <form
           onChange={this.handleStatusChange}
           onSubmit={this.handleStatusSubmit}

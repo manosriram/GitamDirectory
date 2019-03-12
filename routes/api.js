@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Post = require("../models/Post");
 const User = require("../models/User");
+const jsonwt = require("jsonwebtoken");
+const key = require("../setup/url").secret;
 
 router.get("/", (req, res) => {
   res.send("API");
@@ -9,6 +11,99 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
   res.send("API POST");
+});
+
+router.post("/unFollowUser", (req, res) => {
+  const email = req.body.user;
+  var email2;
+  // console.log(email);
+  jsonwt.verify(req.cookies.auth_t, key, (err, user) => {
+    email2 = user.email;
+    var index;
+    var flag = 0;
+    User.findOne({ email })
+      .then(person1 => {
+        User.findOne({ email: email2 })
+          .then(person2 => {
+            console.log(person2);
+            for (var i = 0; i < person1.followedBy.length; i++) {
+              if (person1.followedBy[i]._id == person2.id) {
+                index = i;
+                flag = 1;
+                break;
+              }
+            }
+
+            if (flag === 1) {
+              person1.followedBy.splice(index, 1);
+              person1.save();
+              person2.follows.splice(index, 1);
+              person2.save();
+              console.log(person2);
+              return res.json({ unFollowed: true });
+            } else res.json({ unFollowed: false });
+          })
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
+  });
+});
+
+router.post("/getFollowStatus", (req, res) => {
+  const email = req.body.email;
+  jsonwt.verify(req.cookies.auth_t, key, (err, user) => {
+    User.findOne({ email })
+      .then(person => {
+        var flag = 0;
+        for (var t = 0; t < person.followedBy.length; t++) {
+          if (person.followedBy[t]._id == user.id) {
+            flag = 1;
+            break;
+          }
+        }
+        if (flag == 1) {
+          return res.json({ following: true });
+        } else return res.json({ following: false });
+      })
+      .catch(err => console.log(err));
+  });
+});
+
+router.post("/followUser", (req, res) => {
+  const email = req.body.user;
+  var email2, id;
+  jsonwt.verify(req.cookies.auth_t, key, (err, user) => {
+    if (user) {
+      email2 = user.email;
+      id = user.id;
+    }
+  });
+
+  User.findOne({ email: email2 })
+    .then(person1 => {
+      User.findOne({ email: email })
+        .then(person2 => {
+          var flag = 0;
+
+          for (var i = 0; i < person1.follows.length; i++) {
+            if (person1.follows[i]._id == person2.id) {
+              flag = 1;
+            }
+          }
+          console.log(person2);
+
+          if (flag === 0) {
+            person1.follows.push({ _id: `${person2.id}` });
+            person1.save();
+            person2.followedBy.push({ _id: `${person1.id}` });
+            person2.save();
+            console.log(person1);
+            return res.json({ followed: true });
+          } else res.json({ followed: true });
+        })
+        .catch(err => console.log(err));
+    })
+    .catch(err => console.log(err));
 });
 
 router.post("/getUser/:email", (req, res) => {
