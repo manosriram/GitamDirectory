@@ -33,7 +33,6 @@ class UserProfile extends React.Component {
       body: JSON.stringify({ email })
     });
     const res2 = await res1.json();
-    console.log(res2);
     this.setState({ isSpinning: false, payload: res2.user, searchUser: true });
   };
 
@@ -102,7 +101,7 @@ class UserProfile extends React.Component {
       });
     }
 
-    // this.setState({ isSpinning: false });
+    this.setState({ isSpinning: false });
   };
 
   showMore = () => {
@@ -182,7 +181,7 @@ class UserProfile extends React.Component {
       }
 
       return (
-        <div>
+        <div id="1">
           <div class="sidenav">
             <h1>{this.state.details.name}</h1>
             {/* <br /> */}
@@ -237,7 +236,7 @@ class UserProfile extends React.Component {
               var ago = moment(post.timestamp).fromNow();
 
               return (
-                <div>
+                <div id="2">
                   <br />
                   <div id="mainPost">
                     <br />
