@@ -22,6 +22,15 @@ router.post("/getUserInfo", (req, res) => {
     .catch(err => console.log(err));
 });
 
+router.post("/getFollowers", (req, res) => {
+  const email = req.body.email;
+  User.findOne({ email })
+    .then(person => {
+      return res.json({ followers: person.followedBy });
+    })
+    .catch(err => console.log(err));
+});
+
 router.post("/getFollowing", (req, res) => {
   const email = req.body.email;
   User.findOne({ email })

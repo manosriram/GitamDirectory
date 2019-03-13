@@ -86,10 +86,14 @@ class SearchProfile extends React.Component {
             </h4>
           )}
           <br />
-          {/* <p>{this.state.details.bio}</p> */}
-          <h4 id="bio">{this.state.details.bio}</h4>
+
+          {this.state.details.bio && (
+            <div id="userBio">
+              <h4>{this.state.details.bio}</h4>
+            </div>
+          )}
           <br />
-          <br />
+
           {this.state.details.designation && (
             <h3>Works as {this.state.details.designation}</h3>
           )}

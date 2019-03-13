@@ -56,8 +56,23 @@ class UserProfile extends React.Component {
     console.log(this.state);
   };
 
-  getFollowersList = () => {
-    console.log("Followers List");
+  getFollowersList = async () => {
+    this.setState({ isSpinning: true });
+    const res1 = await fetch("/api/getFollowers", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email: this.state.details.email })
+    });
+    const res2 = await res1.json();
+    console.log(res2);
+    this.setState({
+      isSpinning: false,
+      followers: res2.followers,
+      showFollowersList: true
+    });
   };
 
   componentWillMount = async () => {
@@ -87,7 +102,7 @@ class UserProfile extends React.Component {
       });
     }
 
-    this.setState({ isSpinning: false });
+    // this.setState({ isSpinning: false });
   };
 
   showMore = () => {
@@ -120,12 +135,12 @@ class UserProfile extends React.Component {
 
       if (this.state.showFollowingList === true) {
         return (
-          <>
+          <React.Fragment>
             <h1>Following List</h1>
             <br />
             {this.state.following.map((user, userID) => {
               return (
-                <>
+                <React.Fragment>
                   <div id="followingList" key={userID}>
                     <h2>
                       <a onClick={this.getUserInfo} name={user.email} id="user">
@@ -135,10 +150,34 @@ class UserProfile extends React.Component {
                     <h3>{user.email}</h3>
                   </div>
                   <br />
-                </>
+                </React.Fragment>
               );
             })}
-          </>
+          </React.Fragment>
+        );
+      }
+
+      if (this.state.showFollowersList === true) {
+        return (
+          <React.Fragment>
+            <h1>Followers List</h1>
+            <br />
+            {this.state.followers.map((user, userID) => {
+              return (
+                <React.Fragment>
+                  <div id="followingList" key={userID}>
+                    <h2>
+                      <a onClick={this.getUserInfo} name={user.email} id="user">
+                        {user.name}
+                      </a>{" "}
+                    </h2>
+                    <h3>{user.email}</h3>
+                  </div>
+                  <br />
+                </React.Fragment>
+              );
+            })}
+          </React.Fragment>
         );
       }
 
