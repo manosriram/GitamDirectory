@@ -111,6 +111,31 @@ textarea::placeholder {
   font-size: 20px;
 }
 
+#followingList {
+  margin: auto;
+  border: 1px solid white;
+  width: 300px;
+  height: auto;
+}
+
+a {
+  display: inline-block;
+}
+#userBio {
+  margin: auto;
+  width: 300px;
+  height: auto;
+  border: 1px solid black;
+}
+
+#user {
+  cursor: pointer;
+}
+
+#user:hover {
+  text-decoration: underline;
+}
+
 @media screen and (max-height: 450px) {
   .sidenav {
     padding-top: 15px;

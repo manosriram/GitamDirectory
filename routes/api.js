@@ -13,11 +13,20 @@ router.post("/", (req, res) => {
   res.send("API POST");
 });
 
+router.post("/getUserInfo", (req, res) => {
+  const email = req.body.email;
+  User.findOne({ email })
+    .then(person => {
+      return res.json({ user: person });
+    })
+    .catch(err => console.log(err));
+});
+
 router.post("/getFollowing", (req, res) => {
   const email = req.body.email;
   User.findOne({ email })
     .then(person => {
-      console.log(person.follows);
+      return res.json({ following: person.follows });
     })
     .catch(err => console.log(err));
 });
@@ -33,7 +42,7 @@ router.post("/unFollowUser", (req, res) => {
         User.findOne({ email: email2 })
           .then(person2 => {
             for (var i = 0; i < person1.followedBy.length; i++) {
-              if (person1.followedBy[i]._id == person2.id) {
+              if (person1.followedBy[i].id == person2.id) {
                 person1.followedBy.splice(i, 1);
                 person1.save();
                 person2.follows.splice(i, 1);
@@ -59,7 +68,7 @@ router.post("/getFollowStatus", (req, res) => {
       .then(person => {
         var flag = 0;
         for (var t = 0; t < person.followedBy.length; t++) {
-          if (person.followedBy[t]._id == user.id) {
+          if (person.followedBy[t].id == user.id) {
             flag = 1;
             break;
           }
@@ -95,9 +104,17 @@ router.post("/followUser", (req, res) => {
             }
           }
           if (flag === 0) {
-            person1.follows.push(person2._id);
+            person1.follows.push({
+              id: person2._id,
+              name: person2.name,
+              email: person2.email
+            });
             person1.save();
-            person2.followedBy.push(person1._id);
+            person2.followedBy.push({
+              id: person1._id,
+              name: person1.name,
+              email: person1.email
+            });
             person2.save();
             return res.json({ followed: true });
           } else res.json({ followed: true });

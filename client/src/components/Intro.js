@@ -2,7 +2,6 @@ import Spinner from "react-spinner-material";
 import React from "react";
 import "./components.css";
 import LoggedHome from "./LoggedHome";
-const axios = require("axios");
 
 class Intro extends React.Component {
   state = {

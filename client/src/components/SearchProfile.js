@@ -1,6 +1,5 @@
 import "./loggedHome.css";
 import "./components.css";
-import Spinner from "react-spinner-material";
 import React from "react";
 const moment = require("moment");
 

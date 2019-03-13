@@ -1,7 +1,6 @@
 import React from "react";
 import "./searchUser.css";
 import Spinner from "react-spinner-material";
-import UserProfile from "./UserProfile";
 import SearchProfile from "./SearchProfile";
 
 class ShowProfiles extends React.Component {
@@ -112,25 +111,29 @@ class ShowProfiles extends React.Component {
         </React.Fragment>
       );
     }
+
     if (this.state.search === true) {
       return (
         <div id="fragOK">
           {this.state.resultantData.data.map((user, id) => {
             return (
-              <div id="getUser">
-                <a
-                  href="/userProfile"
-                  onClick={this.searchUser}
-                  name={user.email}
-                >
-                  {user.name}
-                </a>
+              <React.Fragment>
+                <div id="getUser">
+                  <h2>
+                    {" "}
+                    <a
+                      href="/userProfile"
+                      onClick={this.searchUser}
+                      name={user.email}
+                    >
+                      {user.name}
+                    </a>
+                  </h2>
+                  <h4> {user.email}</h4>
+                  <h6>{user.bio}</h6>
+                </div>
                 <br />
-                {user.email}
-                <br />
-                <p>{user.bio}</p>
-                <br />
-              </div>
+              </React.Fragment>
             );
           })}
         </div>
