@@ -14,6 +14,22 @@ class UserProfile extends React.Component {
     isLogged: false
   };
 
+  getFollowingList = async () => {
+    console.log("Following list");
+    const res1 = await fetch("/api/getFollowing", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email: this.state.details.email })
+    });
+  };
+
+  getFollowersList = () => {
+    console.log("Followers List");
+  };
+
   componentWillMount = async () => {
     this.setState({ isSpinning: true });
     const tar1 = await axios.post("/auth/getUser");
@@ -72,11 +88,16 @@ class UserProfile extends React.Component {
           <div class="sidenav">
             <h1>{this.state.details.name}</h1>
             <br />
+            <a href="#" onClick={this.getFollowingList}>
+              Following
+            </a>{" "}
+            <a href="#" onClick={this.getFollowersList}>
+              Followers
+            </a>
             <p>{this.state.details.bio}</p>
             {this.state.details.designation && (
               <h3>Works as {this.state.details.designation}</h3>
             )}
-
             <br />
             <h3>Lives in {this.state.details.location}</h3>
             <br />

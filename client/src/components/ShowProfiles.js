@@ -43,26 +43,33 @@ class ShowProfiles extends React.Component {
 
   handleFormSubmit = async event => {
     event.preventDefault();
-    this.setState({ isSpinning: true });
-    var data = {
-      parameter: this.state.query
-    };
-    try {
-      const res = await fetch("/api/getUserProfile", {
-        method: "POST",
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-      });
-      const result = await res.json();
-      this.setState(
-        { resultantData: result, search: true, isSpinning: false },
-        () => console.log(this.state)
-      );
-    } catch (er) {
-      console.log(er);
+    var msg = document.getElementById("erMsg");
+    if (!event.target.searchParameter.value) {
+      msg.innerHTML += `Enter some query..`;
+      console.log(msg.innerHTML);
+    } else {
+      this.setState({ isSpinning: true });
+      var data = {
+        parameter: this.state.query
+      };
+      try {
+        const res = await fetch("/api/getUserProfile", {
+          method: "POST",
+          headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        this.setState({
+          resultantData: result,
+          search: true,
+          isSpinning: false
+        });
+      } catch (er) {
+        console.log(er);
+      }
     }
   };
 
@@ -88,6 +95,7 @@ class ShowProfiles extends React.Component {
     if (this.state.search === false) {
       return (
         <React.Fragment>
+          <h1 id="erMsg" />
           <form
             id="searchForm"
             onChange={this.handleFormChange}

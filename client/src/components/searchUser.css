@@ -14,3 +14,7 @@ input {
 #getUser {
   border: 1px solid black;
 }
+#erMsg {
+  margin-top: 10px;
+  color: white;
+}

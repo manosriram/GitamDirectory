@@ -51,6 +51,7 @@ class SearchProfile extends React.Component {
     });
 
     const req2 = await req1.json();
+    console.log(req2);
     this.setState({ following: req2.following });
 
     const res1 = await fetch("/api/getAllUserPosts", {
@@ -70,6 +71,7 @@ class SearchProfile extends React.Component {
       <React.Fragment>
         <div className="sideNav">
           <h1>{this.state.details.name}</h1>
+
           {this.state.following === false && (
             <h4 id="followBox" onClick={this.followUser}>
               {" "}

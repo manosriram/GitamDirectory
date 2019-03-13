@@ -13,33 +13,36 @@ router.post("/", (req, res) => {
   res.send("API POST");
 });
 
+router.post("/getFollowing", (req, res) => {
+  const email = req.body.email;
+  User.findOne({ email })
+    .then(person => {
+      console.log(person.follows);
+    })
+    .catch(err => console.log(err));
+});
+
 router.post("/unFollowUser", (req, res) => {
   const email = req.body.user;
   var email2;
-  // console.log(email);
   jsonwt.verify(req.cookies.auth_t, key, (err, user) => {
     email2 = user.email;
-    var index;
     var flag = 0;
     User.findOne({ email })
       .then(person1 => {
         User.findOne({ email: email2 })
           .then(person2 => {
-            console.log(person2);
             for (var i = 0; i < person1.followedBy.length; i++) {
               if (person1.followedBy[i]._id == person2.id) {
-                index = i;
+                person1.followedBy.splice(i, 1);
+                person1.save();
+                person2.follows.splice(i, 1);
+                person2.save();
                 flag = 1;
                 break;
               }
             }
-
             if (flag === 1) {
-              person1.followedBy.splice(index, 1);
-              person1.save();
-              person2.follows.splice(index, 1);
-              person2.save();
-              console.log(person2);
               return res.json({ unFollowed: true });
             } else res.json({ unFollowed: false });
           })
@@ -88,16 +91,14 @@ router.post("/followUser", (req, res) => {
           for (var i = 0; i < person1.follows.length; i++) {
             if (person1.follows[i]._id == person2.id) {
               flag = 1;
+              break;
             }
           }
-          console.log(person2);
-
           if (flag === 0) {
-            person1.follows.push({ _id: `${person2.id}` });
+            person1.follows.push(person2._id);
             person1.save();
-            person2.followedBy.push({ _id: `${person1.id}` });
+            person2.followedBy.push(person1._id);
             person2.save();
-            console.log(person1);
             return res.json({ followed: true });
           } else res.json({ followed: true });
         })
