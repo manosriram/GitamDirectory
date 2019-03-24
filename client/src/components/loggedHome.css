@@ -133,6 +133,17 @@ a {
   text-decoration: underline;
 }
 
+#UN {
+  text-align: left;
+}
+#feedBox {
+  background: beige;
+  margin: auto;
+  width: 25%;
+  height: 100px;
+  border: 1px solid black;
+}
+
 @media screen and (max-height: 450px) {
   .sidenav {
     padding-top: 15px;

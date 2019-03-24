@@ -19,7 +19,7 @@ class LoggedHome extends React.Component {
     });
     const res2 = await res1.json();
     this.setState({ feedData: res2.feedData });
-    console.log(this.state.feedData[0]);
+    console.log(this.state.feedData);
   };
 
   handleStatusChange = e => {
@@ -70,13 +70,20 @@ class LoggedHome extends React.Component {
           <input type="submit" value="Post" id="post" />
         </form>
         <div id="postBox" />
+        <br />
+        <br />
         <div id="feedData">
           {this.state.feedData.map((el, ind) => {
             return (
-              <div id="feedBox">
-                <br />
-                <p>{el.name}</p>
-                <h6>{el.body}</h6>
+              <div>
+                <div id="feedBox">
+                  <strong>
+                    {" "}
+                    <p>Post By {el.userName}</p>
+                  </strong>
+                  <h6>{el.body}</h6>
+                  <br />
+                </div>
                 <br />
               </div>
             );

@@ -8,13 +8,17 @@ router.post("/userFeed", async (req, res) => {
   for (var t = 0; t < followedBy.length; t++) {
     try {
       const res1 = await Post.find({ postById: followedBy[t].id });
-      sendData.push(res1);
+      if (res1[0]) {
+        res1.map((el, ind) => {
+          sendData.push(el);
+        });
+      }
     } catch (Er) {
       console.log(Er);
     }
   }
-  console.log(sendData[0]);
-  return res.json({ feedData: sendData[0] });
+  //   console.log(sendData);
+  return res.json({ feedData: sendData.reverse() });
 });
 
 router.get("/", (req, res) => {
