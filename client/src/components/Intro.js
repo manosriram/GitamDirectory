@@ -38,19 +38,23 @@ class Intro extends React.Component {
 
   componentDidMount = async () => {
     this.setState({ isSpinning: true });
-    const tar1 = await fetch("/auth/getUser", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json"
-      }
-    });
-    const tar = await tar1.json();
-    if (tar.user1) {
-      this.setState({
-        details: tar.user1,
-        isLoggedIn: tar.isLoggedIn
+    try {
+      const tar1 = await fetch("/auth/getUser", {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json"
+        }
       });
+      const tar = await tar1.json();
+      if (tar.user1) {
+        this.setState({
+          details: tar.user1,
+          isLoggedIn: tar.isLoggedIn
+        });
+      }
+    } catch (er) {
+      console.log(er);
     }
     this.setState({ isSpinning: false });
   };

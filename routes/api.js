@@ -161,10 +161,15 @@ router.post("/getUserProfile", (req, res) => {
 router.post("/submitStatus", (req, res) => {
   const email = req.body.userData.email;
   const status = req.body.status;
+  // console.log(req.body.userData._id);
+  const userID = req.body.userData._id;
+  const name = req.body.userData.name;
 
   const newPost = new Post({
     body: status,
-    postBy: email
+    postBy: email,
+    postById: userID,
+    userName: name
   });
   newPost.save();
 

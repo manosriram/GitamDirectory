@@ -19,6 +19,13 @@ const PostSchema = new Schema({
     required: true
   },
 
+  postById: {
+    type: String
+  },
+  userName: {
+    type: String
+  },
+
   liked: {
     type: Boolean,
     default: false

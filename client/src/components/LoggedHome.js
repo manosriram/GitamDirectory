@@ -3,12 +3,24 @@ import "./loggedHome.css";
 
 class LoggedHome extends React.Component {
   state = {
-    status: ""
+    status: "",
+    feedData: []
   };
 
-  componentDidMount() {
-    console.log(this.props);
-  }
+  componentDidMount = async () => {
+    // console.log(this.props.data.followedBy);
+    const res1 = await fetch("/feed/userFeed", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ data: this.props.data.followedBy })
+    });
+    const res2 = await res1.json();
+    this.setState({ feedData: res2.feedData });
+    console.log(this.state.feedData[0]);
+  };
 
   handleStatusChange = e => {
     this.setState({
@@ -42,8 +54,6 @@ class LoggedHome extends React.Component {
         <br />
         <br />
         <h1>Welcome {this.props.data.name}</h1>
-        {/* <img src="https://img.icons8.com/material/48/000000/add-user-male.png" /> */}
-        {/* <img src="https://img.icons8.com/ios/50/000000/checked-user-male-filled.png" /> */}
         <form
           onChange={this.handleStatusChange}
           onSubmit={this.handleStatusSubmit}
@@ -60,6 +70,18 @@ class LoggedHome extends React.Component {
           <input type="submit" value="Post" id="post" />
         </form>
         <div id="postBox" />
+        <div id="feedData">
+          {this.state.feedData.map((el, ind) => {
+            return (
+              <div id="feedBox">
+                <br />
+                <p>{el.name}</p>
+                <h6>{el.body}</h6>
+                <br />
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   }
