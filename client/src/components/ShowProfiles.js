@@ -5,10 +5,8 @@ import SearchProfile from "./SearchProfile";
 
 class ShowProfiles extends React.Component {
   state = {
-    users: [],
     userPosts: [],
     query: "",
-    email: "",
     resultantData: null,
     search: false,
     isSpinning: false,
@@ -24,17 +22,25 @@ class ShowProfiles extends React.Component {
 
   sendUserData = async e => {
     const email = e.target.id;
-    // this.setState({ email });
-    const res1 = await fetch("/api/getUserInfo", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ email: email })
-    });
-    const res2 = await res1.json();
-    this.setState({ data: res2.user, listAllRedirect: true });
+    this.setState({ isSpinning: true });
+    try {
+      const res1 = await fetch("/api/getUserInfo", {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email: email })
+      });
+      const res2 = await res1.json();
+      this.setState({
+        data: res2.user,
+        isSpinning: false,
+        listAllRedirect: true
+      });
+    } catch (er) {
+      console.log(er);
+    }
   };
 
   searchUser = async e => {
@@ -104,7 +110,6 @@ class ShowProfiles extends React.Component {
     });
     const res2 = await res1.json();
     this.setState({ users: res2.people, listAll: true });
-    console.log(this.state);
   };
 
   render() {
@@ -135,9 +140,15 @@ class ShowProfiles extends React.Component {
           {this.state.users.map((user, userIndex) => {
             return (
               <div>
+                <br />
+                <br />
                 <div id="userBox">
                   <br />
-                  <h2 onClick={this.sendUserData} id={user.email}>
+                  <h2
+                    onClick={this.sendUserData}
+                    id={user.email}
+                    className="username"
+                  >
                     {user.name}
                   </h2>
                   <br />

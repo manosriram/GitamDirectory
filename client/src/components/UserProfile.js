@@ -24,84 +24,102 @@ class UserProfile extends React.Component {
   getUserInfo = async e => {
     const email = e.target.name;
     this.setState({ isSpinning: true });
-    const res1 = await fetch("/api/getUserInfo", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ email })
-    });
-    const res2 = await res1.json();
-    this.setState({ isSpinning: false, payload: res2.user, searchUser: true });
+    try {
+      const res1 = await fetch("/api/getUserInfo", {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email })
+      });
+      const res2 = await res1.json();
+      this.setState({
+        isSpinning: false,
+        payload: res2.user,
+        searchUser: true
+      });
+    } catch (er) {
+      console.log(er);
+    }
   };
 
   getFollowingList = async () => {
     this.setState({ isSpinning: true });
-    const res1 = await fetch("/api/getFollowing", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ email: this.state.details.email })
-    });
-    const res2 = await res1.json();
-    this.setState({
-      following: res2.following,
-      isSpinning: false,
-      showFollowingList: true
-    });
-    console.log(this.state);
+    try {
+      const res1 = await fetch("/api/getFollowing", {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email: this.state.details.email })
+      });
+      const res2 = await res1.json();
+      this.setState({
+        following: res2.following,
+        isSpinning: false,
+        showFollowingList: true
+      });
+    } catch (er) {
+      console.log(er);
+    }
   };
 
   getFollowersList = async () => {
     this.setState({ isSpinning: true });
-    const res1 = await fetch("/api/getFollowers", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ email: this.state.details.email })
-    });
-    const res2 = await res1.json();
-    console.log(res2);
-    this.setState({
-      isSpinning: false,
-      followers: res2.followers,
-      showFollowersList: true
-    });
+    try {
+      const res1 = await fetch("/api/getFollowers", {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email: this.state.details.email })
+      });
+      const res2 = await res1.json();
+      console.log(res2);
+      this.setState({
+        isSpinning: false,
+        followers: res2.followers,
+        showFollowersList: true
+      });
+    } catch (er) {
+      console.log(er);
+    }
   };
 
   componentWillMount = async () => {
     this.setState({ isSpinning: true });
-    const tar1 = await axios.post("/auth/getUser");
-    const tar = await tar1;
+    try {
+      const tar1 = await axios.post("/auth/getUser");
 
-    if (tar.data.data === "") {
-      this.setState({ isLogged: false });
-    } else this.setState({ isLogged: true });
+      const tar = await tar1;
 
-    const postData = await fetch("/api/getAllUserPosts", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(tar.data.user1)
-    });
-    const result = await postData.json();
-    console.log(result);
+      if (tar.data.data === "") {
+        this.setState({ isLogged: false });
+      } else this.setState({ isLogged: true });
 
-    if (tar.data.user1) {
-      this.setState({
-        details: tar.data.user1,
-        postData: result.reverse()
+      const postData = await fetch("/api/getAllUserPosts", {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(tar.data.user1)
       });
-    }
+      const result = await postData.json();
 
-    this.setState({ isSpinning: false });
+      if (tar.data.user1) {
+        this.setState({
+          details: tar.data.user1,
+          postData: result.reverse()
+        });
+      }
+      this.setState({ isSpinning: false });
+    } catch (er) {
+      console.log(er);
+    }
   };
 
   showMore = () => {
