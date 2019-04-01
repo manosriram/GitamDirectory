@@ -13,6 +13,23 @@ router.post("/", (req, res) => {
   res.send("API POST");
 });
 
+router.post("/getAllUsers", (req, res) => {
+  User.find()
+    .then(people => {
+      return res.json({ people: people });
+    })
+    .catch(err => console.log(err));
+});
+
+router.post("/deletePost", (req, res) => {
+  const postID = req.body.postID;
+  console.log(postID);
+  Post.deleteOne({ _id: postID })
+    .then(r => console.log(r))
+    .catch(err => console.log(err));
+  return res.json({ deleted: true });
+});
+
 router.post("/getUserInfo", (req, res) => {
   const email = req.body.email;
   User.findOne({ email })

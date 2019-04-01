@@ -144,6 +144,13 @@ a {
   border: 1px solid black;
 }
 
+.delete {
+  cursor: pointer;
+  text-decoration: underline;
+  margin-right: 20px;
+  float: right;
+}
+
 @media screen and (max-height: 450px) {
   .sidenav {
     padding-top: 15px;

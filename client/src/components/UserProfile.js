@@ -110,6 +110,18 @@ class UserProfile extends React.Component {
     });
   };
 
+  deletePost = async e => {
+    const res1 = await fetch("/api/deletePost", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ postID: e.target.id })
+    });
+    window.location = "/userProfile";
+  };
+
   render() {
     if (this.state.isSpinning === true) {
       return (
@@ -239,6 +251,13 @@ class UserProfile extends React.Component {
                 <div id="2">
                   <br />
                   <div id="mainPost">
+                    <p
+                      id={post._id}
+                      onClick={this.deletePost}
+                      className="delete"
+                    >
+                      delete
+                    </p>
                     <br />
                     <br />
                     <h5 id="postUser" key={postIndex}>

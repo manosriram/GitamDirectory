@@ -5,22 +5,42 @@ import SearchProfile from "./SearchProfile";
 
 class ShowProfiles extends React.Component {
   state = {
+    users: [],
     userPosts: [],
     query: "",
+    email: "",
     resultantData: null,
     search: false,
     isSpinning: false,
     redirect: false,
-    data: null
+    data: null,
+    listAll: false,
+    listAllRedirect: false
   };
 
   handleFormChange = e => {
     this.setState({ query: e.target.value });
   };
 
+  sendUserData = async e => {
+    const email = e.target.id;
+    // this.setState({ email });
+    const res1 = await fetch("/api/getUserInfo", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email: email })
+    });
+    const res2 = await res1.json();
+    this.setState({ data: res2.user, listAllRedirect: true });
+  };
+
   searchUser = async e => {
     e.preventDefault();
     const name = e.target.name;
+    this.setState({ spinning: true, listAll: false });
     try {
       const res1 = await fetch(`/api/getUser/${name}`, {
         method: "POST",
@@ -31,10 +51,12 @@ class ShowProfiles extends React.Component {
         body: JSON.stringify({ name })
       });
       const res2 = await res1.json();
-      this.setState(
-        { redirect: true, data: res2.data, userPosts: res2.posts },
-        () => console.log(this.state)
-      );
+      this.setState({
+        redirect: true,
+        data: res2.data,
+        userPosts: res2.posts,
+        spinning: false
+      });
     } catch (er) {
       console.log(er);
     }
@@ -72,6 +94,19 @@ class ShowProfiles extends React.Component {
     }
   };
 
+  listAll = async () => {
+    const res1 = await fetch("/api/getAllUsers", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      }
+    });
+    const res2 = await res1.json();
+    this.setState({ users: res2.people, listAll: true });
+    console.log(this.state);
+  };
+
   render() {
     if (this.state.isSpinning === true) {
       return (
@@ -83,6 +118,34 @@ class ShowProfiles extends React.Component {
             visible={this.state.isSpinning}
             id="spinner"
           />
+        </React.Fragment>
+      );
+    }
+
+    if (this.state.listAllRedirect === true) {
+      var data = {
+        email: this.state.email
+      };
+      return <SearchProfile data={this.state.data} />;
+    }
+
+    if (this.state.listAll === true) {
+      return (
+        <React.Fragment>
+          {this.state.users.map((user, userIndex) => {
+            return (
+              <div>
+                <div id="userBox">
+                  <br />
+                  <h2 onClick={this.sendUserData} id={user.email}>
+                    {user.name}
+                  </h2>
+                  <br />
+                </div>
+                <br />
+              </div>
+            );
+          })}
         </React.Fragment>
       );
     }
@@ -108,6 +171,10 @@ class ShowProfiles extends React.Component {
             />
             <input type="submit" value="Search" />
           </form>
+          <br />
+          <br />
+          <br />
+          <button onClick={this.listAll}>List All Users.</button>
         </React.Fragment>
       );
     }

@@ -21,3 +21,10 @@ input {
   margin-top: 10px;
   color: white;
 }
+
+#userBox {
+  width: 50%;
+  margin: auto;
+  padding: 0;
+  border: 1px solid black;
+}
