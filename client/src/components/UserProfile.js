@@ -18,7 +18,47 @@ class UserProfile extends React.Component {
     isSpinning: false,
     isLogged: false,
     showFollowingList: false,
-    showFollowersList: false
+    showFollowersList: false,
+    confirmDeletion: false
+  };
+
+  deleteAllPosts = async () => {
+    const email = this.state.details.email;
+    try {
+      const res1 = await fetch("/api/deleteAllPosts", {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email: email })
+      });
+      const res2 = await res1.json();
+    } catch (er) {
+      console.log(er);
+    }
+  };
+
+  confirmDelete = async () => {
+    const email = this.state.details.email;
+    try {
+      const res1 = await fetch("/api/deleteAccount", {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email: email })
+      });
+      const res2 = await res1.json();
+      window.location = "/";
+    } catch (er) {
+      console.log(er);
+    }
+  };
+
+  deleteAccount = e => {
+    this.setState({ confirmDeletion: true });
   };
 
   getUserInfo = async e => {
@@ -154,6 +194,14 @@ class UserProfile extends React.Component {
         </div>
       );
     } else {
+      if (this.state.confirmDeletion === true) {
+        var body = document.getElementById("1");
+        // var body = document.getElementsByTagName("body")[0];
+        body.setAttribute("class", "blur");
+        var hidden = document.getElementById("hide");
+        hidden.style.display = "block";
+      }
+
       if (this.state.isLogged === false) {
         return (window.location = "/");
       }
@@ -211,102 +259,126 @@ class UserProfile extends React.Component {
       }
 
       return (
-        <div id="1">
-          <div class="sidenav">
-            <h1>{this.state.details.name}</h1>
-            {/* <br /> */}
-
-            <div id="followModel">
-              <a href="#" onClick={this.getFollowingList}>
-                Following
-              </a>{" "}
-              <a href="#" onClick={this.getFollowersList}>
-                Followers
-              </a>
-            </div>
-
-            <br />
-            {this.state.details.bio && (
-              <div id="userBio">
-                <h4>{this.state.details.bio}</h4>
-                <br />
-              </div>
-            )}
-            {this.state.details.designation && (
-              <h3>Works as {this.state.details.designation}</h3>
-            )}
-            <br />
-            <h3>Lives in {this.state.details.location}</h3>
-            <br />
-            <h3>Is {this.state.details.age} years old.</h3>
-            <br />
-            <h3 id="em">{this.state.details.email}</h3>
-            <br />
+        <div>
+          <div id="hide">
+            <h1>Are You Sure ?</h1>
+            <button className="btn btn-danger" onClick={this.confirmDelete}>
+              YES
+            </button>
           </div>
-          <div id="postArea">
-            {this.state.postData.length === 0 && <h4>No Posts to show.</h4>}
-            {this.state.postData.length !== 0 && (
-              <h4>All Posts by {this.state.details.name}</h4>
-            )}
+          <div id="1">
+            <div class="sidenav">
+              <h1>{this.state.details.name}</h1>
 
-            {this.state.postData.map((post, postIndex) => {
-              var flag, data;
-              data = post.body;
-              if (post.body.length > 30) {
-                flag = 1;
-              } else {
-                flag = 0;
-              }
-              if (flag === 1) {
-                data = post.body.substring(0, 150) + ` ....`;
-              }
-              if (this.state.active === true) {
-                data = post.body;
-              }
-              var ago = moment(post.timestamp).fromNow();
-
-              return (
-                <div id="2">
+              <div id="followModel">
+                <a href="#" onClick={this.getFollowingList}>
+                  Following
+                </a>{" "}
+                <a href="#" onClick={this.getFollowersList}>
+                  Followers
+                </a>
+              </div>
+              <br />
+              {this.state.details.bio && (
+                <div id="userBio">
+                  <h4>{this.state.details.bio}</h4>
                   <br />
-                  <div id="mainPost">
-                    <p
-                      id={post._id}
-                      onClick={this.deletePost}
-                      className="delete"
-                    >
-                      delete
-                    </p>
-                    <br />
-                    <br />
-                    <h5 id="postUser" key={postIndex}>
-                      <strong>{this.state.details.name} </strong>({ago})
-                      <br />
-                    </h5>
-                    <br />
-                    <h5 id="postData" key={postIndex + 1}>
-                      {data}
-                    </h5>
-                    <br />
+                </div>
+              )}
+              {this.state.details.designation && (
+                <h3 id="desg">Works as {this.state.details.designation}</h3>
+              )}
+              <br />
+              <h3>Lives in {this.state.details.location}</h3>
+              <br />
+              <h3>Is {this.state.details.age} years old.</h3>
+              <br />
+              <h3 id="em">{this.state.details.email}</h3>
+              <br />
+              <div id="deleteButtonGroup">
+                <button
+                  id="deleteAcc"
+                  className="btn btn-danger"
+                  onClick={this.deleteAccount}
+                >
+                  Delete Account
+                </button>
+                &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+                <button
+                  id="deletePost"
+                  className="btn btn-danger"
+                  onClick={this.deleteAllPosts}
+                >
+                  Delete All Posts.
+                </button>
+              </div>
+              <br />
+            </div>
+            <div id="postArea">
+              {this.state.postData.length === 0 && <h4>No Posts to show.</h4>}
+              {this.state.postData.length !== 0 && (
+                <h4>All Posts by {this.state.details.name}</h4>
+              )}
 
+              {this.state.postData.map((post, postIndex) => {
+                var flag, data;
+                data = post.body;
+                if (post.body.length > 30) {
+                  flag = 1;
+                } else {
+                  flag = 0;
+                }
+                if (flag === 1) {
+                  data = post.body.substring(0, 150) + ` ....`;
+                }
+                if (this.state.active === true) {
+                  data = post.body;
+                }
+                var ago = moment(post.timestamp).fromNow();
+
+                return (
+                  <div id="2">
                     <br />
-                    {flag === 1 && this.state.active === false && (
-                      <button key={postIndex + 2} onClick={this.showMore}>
-                        Show More
-                      </button>
-                    )}
-                    {flag === 1 && this.state.active === true && (
-                      <button key={postIndex + 3} onClick={this.showMore}>
-                        Show Less
-                      </button>
-                    )}
+                    <div id="mainPost">
+                      <p
+                        id={post._id}
+                        onClick={this.deletePost}
+                        className="delete"
+                      >
+                        delete
+                      </p>
+                      <br />
+                      <br />
+                      <h5 id="postUser" key={postIndex}>
+                        <strong>{this.state.details.name} </strong>({ago})
+                        <br />
+                      </h5>
+                      <br />
+                      <h5 id="postData" key={postIndex + 1}>
+                        {data}
+                      </h5>
+                      <br />
+
+                      <br />
+                      {flag === 1 && this.state.active === false && (
+                        <button key={postIndex + 2} onClick={this.showMore}>
+                          Show More
+                        </button>
+                      )}
+                      {flag === 1 && this.state.active === true && (
+                        <button key={postIndex + 3} onClick={this.showMore}>
+                          Show Less
+                        </button>
+                      )}
+                      <br />
+                      <br />
+                    </div>
                     <br />
                     <br />
                   </div>
-                  <br />
-                  <br />
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       );

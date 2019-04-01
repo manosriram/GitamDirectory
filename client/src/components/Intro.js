@@ -52,6 +52,10 @@ class Intro extends React.Component {
           details: tar.user1,
           isLoggedIn: tar.isLoggedIn
         });
+      } else {
+        this.setState({
+          isLoggedIn: tar.isLoggedIn
+        });
       }
     } catch (er) {
       console.log(er);

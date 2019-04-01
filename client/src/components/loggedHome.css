@@ -2,6 +2,15 @@ body {
   background: #758aa2;
 }
 
+#hide {
+  display: none;
+}
+
+.blur {
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -119,6 +128,7 @@ a {
   display: inline-block;
 }
 #userBio {
+  padding-top: 30px;
   margin: auto;
   width: 300px;
   height: auto;
@@ -149,6 +159,11 @@ a {
   text-decoration: underline;
   margin-right: 20px;
   float: right;
+}
+
+#deleteAcc,
+#deletePost {
+  width: 20%;
 }
 
 @media screen and (max-height: 450px) {

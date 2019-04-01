@@ -19,7 +19,9 @@ router.post("/getUser", (req, res) => {
           }
         })
         .catch(err => console.log(err));
-    } else res.json({ data: "", isLoggedIn: false });
+    } else {
+      return res.json({ data: "", isLoggedIn: false });
+    }
   });
 });
 

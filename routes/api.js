@@ -13,6 +13,32 @@ router.post("/", (req, res) => {
   res.send("API POST");
 });
 
+router.post("/deleteAllPosts", (req, res) => {
+  const email = req.body.email;
+  Post.deleteMany({ postBy: email })
+    .then(r => console.log(r))
+    .catch(err => console.log(err));
+  return res.json({ deleted: true });
+});
+
+router.post("/deleteAccount", (req, res) => {
+  const email = req.body.email;
+
+  // Delete POSTS.
+  Post.deleteMany({ postBy: email })
+    .then(re1 => console.log("deleted!"))
+    .catch(err => console.log(err));
+
+  //Delete USER.
+  User.deleteOne({ email })
+    .then(re => {})
+    .catch(err => console.log(err));
+
+  console.log("Deleted POSTS and USER");
+  res.clearCookie("auth_t");
+  return res.json({ deleted: true });
+});
+
 router.post("/getAllUsers", (req, res) => {
   User.find()
     .then(people => {
