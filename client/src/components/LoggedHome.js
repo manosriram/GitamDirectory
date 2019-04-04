@@ -1,5 +1,6 @@
 import React from "react";
 import "./loggedHome.css";
+const moment = require("moment");
 
 class LoggedHome extends React.Component {
   state = {
@@ -8,18 +9,17 @@ class LoggedHome extends React.Component {
   };
 
   componentDidMount = async () => {
-    // console.log(this.props.data.followedBy);
     const res1 = await fetch("/feed/userFeed", {
       method: "POST",
       headers: {
         Accept: "application/json, text/plain, */*",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ data: this.props.data.followedBy })
+      body: JSON.stringify({ data: this.props.data.follows })
     });
     const res2 = await res1.json();
-    this.setState({ feedData: res2.feedData });
-    console.log(this.state.feedData);
+    this.setState({ feedData: res2.feedData.reverse() });
+    console.log(this.state);
   };
 
   handleStatusChange = e => {
@@ -35,7 +35,6 @@ class LoggedHome extends React.Component {
       userData: this.props.data
     };
     var innerData = document.getElementById("postReady");
-    console.log(innerData);
     innerData.value = "";
     const res = await fetch("/api/submitStatus", {
       method: "POST",
@@ -74,14 +73,16 @@ class LoggedHome extends React.Component {
         <br />
         <div id="feedData">
           {this.state.feedData.map((el, ind) => {
+            var ago = moment(el.timestamp).fromNow();
             return (
               <div>
                 <div id="feedBox">
-                  <strong>
-                    {" "}
-                    <p>Post By {el.userName}</p>
-                  </strong>
-                  <h6>{el.body}</h6>
+                  {" "}
+                  <h5>
+                    Post By <strong> {el.userName} </strong> &nbsp;&nbsp;(
+                    {ago})
+                  </h5>
+                  <h4>{el.body}</h4>
                   <br />
                 </div>
                 <br />

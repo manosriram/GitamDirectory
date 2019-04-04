@@ -19,7 +19,8 @@ class UserProfile extends React.Component {
     isLogged: false,
     showFollowingList: false,
     showFollowersList: false,
-    confirmDeletion: false
+    confirmDeletion: false,
+    errorMessage: ""
   };
 
   deleteAllPosts = async () => {
@@ -62,8 +63,8 @@ class UserProfile extends React.Component {
   };
 
   getUserInfo = async e => {
-    const email = e.target.name;
     this.setState({ isSpinning: true });
+    const email = e.target.name;
     try {
       const res1 = await fetch("/api/getUserInfo", {
         method: "POST",
@@ -74,14 +75,23 @@ class UserProfile extends React.Component {
         body: JSON.stringify({ email })
       });
       const res2 = await res1.json();
-      this.setState({
-        isSpinning: false,
-        payload: res2.user,
-        searchUser: true
-      });
+      if (res2.user === null) {
+        this.setState({
+          isSpinning: false,
+          errorMessage: "Profile Not Found."
+        });
+        return;
+      } else {
+        this.setState({
+          isSpinning: false,
+          payload: res2.user,
+          searchUser: true
+        });
+      }
     } catch (er) {
       console.log(er);
     }
+    console.log(this.state.payload);
   };
 
   getFollowingList = async () => {
@@ -118,7 +128,6 @@ class UserProfile extends React.Component {
         body: JSON.stringify({ email: this.state.details.email })
       });
       const res2 = await res1.json();
-      console.log(res2);
       this.setState({
         isSpinning: false,
         followers: res2.followers,
@@ -196,7 +205,6 @@ class UserProfile extends React.Component {
     } else {
       if (this.state.confirmDeletion === true) {
         var body = document.getElementById("1");
-        // var body = document.getElementsByTagName("body")[0];
         body.setAttribute("class", "blur");
         var hidden = document.getElementById("hide");
         hidden.style.display = "block";
@@ -206,14 +214,18 @@ class UserProfile extends React.Component {
         return (window.location = "/");
       }
 
-      if (this.state.searchUser === true) {
+      if (this.state.searchUser === true && this.state.payload) {
         return <SearchProfile data={this.state.payload} />;
       }
 
       if (this.state.showFollowingList === true) {
         return (
           <React.Fragment>
-            <h1>Following List</h1>
+            <br />
+            {this.state.following.length === 0 && <h2>Nothing to Show.</h2>}
+            {this.state.following.length > 0 && <h1>Following List</h1>}
+            <br />
+            <h3 id="erMsg"> {this.state.errorMessage} </h3>
             <br />
             {this.state.following.map((user, userID) => {
               return (
@@ -237,7 +249,12 @@ class UserProfile extends React.Component {
       if (this.state.showFollowersList === true) {
         return (
           <React.Fragment>
-            <h1>Followers List</h1>
+            <br />
+            <br />
+            <br />
+
+            {this.state.followers.length === 0 && <h2>Nothing to Show.</h2>}
+            {this.state.followers.length > 0 && <h1>Followers List</h1>}
             <br />
             {this.state.followers.map((user, userID) => {
               return (
