@@ -4,7 +4,6 @@ const Post = require("../models/Post");
 
 router.post("/userFeed", async (req, res) => {
   var sendData = [];
-  console.log(req.body.data);
   const follows = req.body.data;
   for (var t = 0; t < follows.length; t++) {
     try {

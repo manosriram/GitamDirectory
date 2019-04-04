@@ -256,6 +256,8 @@ class UserProfile extends React.Component {
             {this.state.followers.length === 0 && <h2>Nothing to Show.</h2>}
             {this.state.followers.length > 0 && <h1>Followers List</h1>}
             <br />
+            <h3 id="erMsg"> {this.state.errorMessage} </h3>
+            <br />
             {this.state.followers.map((user, userID) => {
               return (
                 <React.Fragment>

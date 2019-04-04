@@ -34,7 +34,6 @@ router.post("/deleteAccount", (req, res) => {
     .then(re => {})
     .catch(err => console.log(err));
 
-  console.log("Deleted POSTS and USER");
   res.clearCookie("auth_t");
   return res.json({ deleted: true });
 });
@@ -49,7 +48,6 @@ router.post("/getAllUsers", (req, res) => {
 
 router.post("/deletePost", (req, res) => {
   const postID = req.body.postID;
-  console.log(postID);
   Post.deleteOne({ _id: postID })
     .then(r => console.log(r))
     .catch(err => console.log(err));
@@ -89,20 +87,30 @@ router.post("/unFollowUser", (req, res) => {
   jsonwt.verify(req.cookies.auth_t, key, (err, user) => {
     email2 = user.email;
     var flag = 0;
-    User.findOne({ email })
+
+    // email -> person2
+    // email2 -> person1
+
+    User.findOne({ email: email2 })
       .then(person1 => {
-        User.findOne({ email: email2 })
+        User.findOne({ email })
           .then(person2 => {
-            for (var i = 0; i < person1.followedBy.length; i++) {
-              if (person1.followedBy[i].id == person2.id) {
-                person1.followedBy.splice(i, 1);
-                person1.save();
-                person2.follows.splice(i, 1);
+            for (var i = 0; i < person2.followedBy.length; i++) {
+              if (person2.followedBy[i].id == person1.id) {
+                person2.followedBy.splice(i, 1);
                 person2.save();
                 flag = 1;
-                break;
               }
             }
+
+            for (var i = 0; i < person1.follows.length; i++) {
+              if (person1.follows[i].id == person2.id) {
+                person1.follows.splice(i, 1);
+                person1.save();
+                flag = 1;
+              }
+            }
+
             if (flag === 1) {
               return res.json({ unFollowed: true });
             } else res.json({ unFollowed: false });
@@ -143,6 +151,9 @@ router.post("/followUser", (req, res) => {
     }
   });
 
+  // email -> person2
+  // email2 -> person1
+
   User.findOne({ email: email2 })
     .then(person1 => {
       User.findOne({ email: email })
@@ -155,6 +166,7 @@ router.post("/followUser", (req, res) => {
               break;
             }
           }
+
           if (flag === 0) {
             person1.follows.push({
               id: person2._id,
@@ -194,7 +206,6 @@ router.post("/getUser/:email", (req, res) => {
 
 router.post("/getUserProfile", (req, res) => {
   var name = req.body.parameter;
-  var users = [];
   name = name.toLowerCase();
   User.find({ username: name }).then(people => {
     return res.json({ data: people });
@@ -204,7 +215,6 @@ router.post("/getUserProfile", (req, res) => {
 router.post("/submitStatus", (req, res) => {
   const email = req.body.userData.email;
   const status = req.body.status;
-  // console.log(req.body.userData._id);
   const userID = req.body.userData._id;
   const name = req.body.userData.name;
 
