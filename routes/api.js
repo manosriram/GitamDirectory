@@ -13,6 +13,7 @@ router.post("/", (req, res) => {
   res.send("API POST");
 });
 
+// Delete all Posts of an User.
 router.post("/deleteAllPosts", (req, res) => {
   const email = req.body.email;
   Post.deleteMany({ postBy: email })
@@ -21,6 +22,11 @@ router.post("/deleteAllPosts", (req, res) => {
   return res.json({ deleted: true });
 });
 
+// Delete User Account.
+/* 
+  Step 1: Delete all the Posts by that User so that the same email is registered again, the data doesn't show up.
+  Step 2: Delete that User Account.
+*/
 router.post("/deleteAccount", (req, res) => {
   const email = req.body.email;
 
@@ -34,10 +40,12 @@ router.post("/deleteAccount", (req, res) => {
     .then(re => {})
     .catch(err => console.log(err));
 
+  // Logout the User.
   res.clearCookie("auth_t");
   return res.json({ deleted: true });
 });
 
+// Get the list of all Users in the Database.
 router.post("/getAllUsers", (req, res) => {
   User.find()
     .then(people => {
@@ -46,6 +54,7 @@ router.post("/getAllUsers", (req, res) => {
     .catch(err => console.log(err));
 });
 
+// Delete a single Post using the PostID.
 router.post("/deletePost", (req, res) => {
   const postID = req.body.postID;
   Post.deleteOne({ _id: postID })
@@ -54,6 +63,7 @@ router.post("/deletePost", (req, res) => {
   return res.json({ deleted: true });
 });
 
+// Gets Information of a particular User using their email.
 router.post("/getUserInfo", (req, res) => {
   const email = req.body.email;
   User.findOne({ email })
@@ -63,6 +73,7 @@ router.post("/getUserInfo", (req, res) => {
     .catch(err => console.log(err));
 });
 
+// Get the list of all the Followers of the User.
 router.post("/getFollowers", (req, res) => {
   const email = req.body.email;
   User.findOne({ email })
@@ -72,6 +83,7 @@ router.post("/getFollowers", (req, res) => {
     .catch(err => console.log(err));
 });
 
+// Get the list of all the Users Following the current (logged-in) User.
 router.post("/getFollowing", (req, res) => {
   const email = req.body.email;
   User.findOne({ email })
@@ -81,6 +93,12 @@ router.post("/getFollowing", (req, res) => {
     .catch(err => console.log(err));
 });
 
+// Unfollow an User.
+
+/* 
+  Step 1 : Remove the User's footprint from the FollowedBy list of that User.
+  Step 2 : Remove the User's footprint from the follows list the current User.
+*/
 router.post("/unFollowUser", (req, res) => {
   const email = req.body.user;
   var email2;
@@ -121,6 +139,7 @@ router.post("/unFollowUser", (req, res) => {
   });
 });
 
+// Get the Follow-Status of the person
 router.post("/getFollowStatus", (req, res) => {
   const email = req.body.email;
   jsonwt.verify(req.cookies.auth_t, key, (err, user) => {
@@ -141,6 +160,11 @@ router.post("/getFollowStatus", (req, res) => {
   });
 });
 
+// Follow an User.
+/* 
+  Step 1 : Check if the User is already Following... If not, follow the user.
+  Step 2 : Else, just return.
+*/
 router.post("/followUser", (req, res) => {
   const email = req.body.user;
   var email2, id;
@@ -188,6 +212,7 @@ router.post("/followUser", (req, res) => {
     .catch(err => console.log(err));
 });
 
+// Get the user based on his/her email address.
 router.post("/getUser/:email", (req, res) => {
   const email = req.params.email;
   User.findOne({ email })
@@ -204,6 +229,7 @@ router.post("/getUser/:email", (req, res) => {
     .catch(er => console.log(er));
 });
 
+// Get user Profile based on his/her Username.
 router.post("/getUserProfile", (req, res) => {
   var name = req.body.parameter;
   name = name.toLowerCase();
@@ -212,6 +238,7 @@ router.post("/getUserProfile", (req, res) => {
   });
 });
 
+// Submit a Post.
 router.post("/submitStatus", (req, res) => {
   const email = req.body.userData.email;
   const status = req.body.status;
@@ -234,6 +261,7 @@ router.post("/submitStatus", (req, res) => {
     .catch(err => console.log(err));
 });
 
+// Get the Posts from all the Users in the Database.
 router.post("/getAllUserPosts", (req, res) => {
   const email = req.body.email; // email of profile user.
 

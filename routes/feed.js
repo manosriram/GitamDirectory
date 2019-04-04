@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Post = require("../models/Post");
 
+// Shows the Feed of the Logged-In User.
+// Posts from all the users that he/she is following sorted by latest Post first.
 router.post("/userFeed", async (req, res) => {
   var sendData = [];
   const follows = req.body.data;
