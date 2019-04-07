@@ -18,7 +18,7 @@ class LoggedHome extends React.Component {
       body: JSON.stringify({ data: this.props.data.follows })
     });
     const res2 = await res1.json();
-    this.setState({ feedData: res2.feedData.reverse() });
+    this.setState({ feedData: res2.feedData });
     console.log(this.state);
   };
 

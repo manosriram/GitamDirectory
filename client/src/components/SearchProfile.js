@@ -62,7 +62,7 @@ class SearchProfile extends React.Component {
       body: JSON.stringify({ email })
     });
     const res2 = await res1.json();
-    this.setState({ postData: res2 });
+    this.setState({ postData: res2.reverse() });
   };
 
   render() {
