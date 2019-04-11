@@ -150,7 +150,7 @@ a {
   background: beige;
   margin: auto;
   width: 50%;
-  height: 100px;
+  height: auto;
   border: 1px solid black;
 }
 
@@ -168,6 +168,14 @@ a {
 
 #erMsg {
   color: red;
+}
+
+#comment {
+  height: 2.3rem;
+}
+
+#comment::placeholder {
+  text-align: center;
 }
 
 @media screen and (max-height: 450px) {

@@ -3,8 +3,7 @@ const Schema = mongoose.Schema;
 
 const PostSchema = new Schema({
   body: {
-    type: String,
-    required: true
+    type: String
   },
   timestamp: {
     type: Date,
@@ -12,11 +11,18 @@ const PostSchema = new Schema({
   },
   likes: [{ type: String, default: 0 }],
 
-  comments: [{ type: String, default: 0 }],
+  comments: [
+    {
+      byName: { type: String },
+      byEmail: { type: String },
+      mainBody: { type: String },
+      postID: { type: String },
+      default: 0
+    }
+  ],
 
   postBy: {
-    type: String,
-    required: true
+    type: String
   },
 
   postById: {

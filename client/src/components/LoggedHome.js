@@ -5,7 +5,34 @@ const moment = require("moment");
 class LoggedHome extends React.Component {
   state = {
     status: "",
-    feedData: []
+    feedData: [],
+    comment: "",
+    showComments: false
+  };
+
+  showPostComments = () => {
+    if (this.state.showComments) {
+      var cm = document.getElementById("commentBox");
+      cm.innerHTML = "";
+    }
+    this.setState({ showComments: !this.state.showComments });
+  };
+
+  submitComment = async e => {
+    const { name, email } = this.props.data;
+    const res1 = await fetch("/feed/submitComment", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        comment: this.state.comment,
+        postID: e.target.value,
+        name,
+        email
+      })
+    });
   };
 
   componentDidMount = async () => {
@@ -19,12 +46,17 @@ class LoggedHome extends React.Component {
     });
     const res2 = await res1.json();
     this.setState({ feedData: res2.feedData });
-    console.log(this.state);
   };
 
   handleStatusChange = e => {
     this.setState({
       status: e.target.value
+    });
+  };
+
+  handleComments = e => {
+    this.setState({
+      comment: e.target.value
     });
   };
 
@@ -83,7 +115,34 @@ class LoggedHome extends React.Component {
                     {ago})
                   </h5>
                   <h4>{el.body}</h4>
+                  <input
+                    type="text"
+                    name="comment"
+                    id="comment"
+                    placeholder="Your Comment"
+                    onChange={this.handleComments}
+                  />{" "}
+                  <button
+                    value={el._id}
+                    name={el.postBy}
+                    onClick={this.submitComment}
+                  >
+                    submit
+                  </button>
                   <br />
+                  <div id="commentBox" />
+                  {this.state.showComments &&
+                    (el.comments.map((comment, commentIndex) => {
+                      var cm = document.getElementById("commentBox");
+                      cm.innerHTML += el.comments[commentIndex].byName;
+                      cm.innerHTML += `  :  `;
+                      cm.innerHTML += el.comments[commentIndex].mainBody;
+                      cm.innerHTML += `<br/>`;
+                    }),
+                    <p onClick={this.showPostComments}>hide comments</p>)}
+                  {!this.state.showComments && (
+                    <p onClick={this.showPostComments}>show comments</p>
+                  )}
                 </div>
                 <br />
               </div>
