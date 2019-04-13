@@ -2,6 +2,16 @@ const express = require("express");
 const router = express.Router();
 const Post = require("../models/Post");
 
+router.post("/grabComments", (req, res) => {
+  const postID = req.body.postID;
+
+  Post.findOne({ _id: postID })
+    .then(post => {
+      return res.json({ postComments: post.comments });
+    })
+    .catch(err => console.log(err));
+});
+
 router.post("/submitComment", (req, res) => {
   const { comment, postID, name, email } = req.body;
   Post.findOne({ _id: postID })

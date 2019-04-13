@@ -178,6 +178,11 @@ a {
   text-align: center;
 }
 
+#show {
+  border: transparent;
+  background: transparent;
+}
+
 @media screen and (max-height: 450px) {
   .sidenav {
     padding-top: 15px;
