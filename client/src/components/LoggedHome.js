@@ -12,14 +12,14 @@ class LoggedHome extends React.Component {
   };
 
   showComments = async e => {
-    var div_ = document.getElementById(e.target.id);
+    var div_ = document.getElementById(e.target.value + e.target.id);
+    console.log(div_);
     this.setState({ showing: !this.state.showing });
 
     if (this.state.showing === true) {
-      div_.innerHTML = "";
+      div_.innerHTML = null;
       return;
     } else {
-      console.log(e.target.id);
       const resp1 = await fetch("/feed/grabComments", {
         method: "POST",
         headers: {
@@ -29,9 +29,11 @@ class LoggedHome extends React.Component {
         body: JSON.stringify({ postID: e.target.value })
       });
       const resp2 = await resp1.json();
-
+      console.log(resp2);
       resp2.postComments.map((el, ind) => {
         div_.innerHTML += "<br/>";
+        div_.innerHTML += `<a onClick=${this.getUser}>${el.byName}</a>`;
+        div_.innerHTML += "   :   ";
         div_.innerHTML += el.mainBody;
         div_.innerHTML += "<br/>";
       });
@@ -153,14 +155,10 @@ class LoggedHome extends React.Component {
                     submit
                   </button>
                   <br />
-                  <div id={ind} />
-                  <button
-                    onClick={this.showComments}
-                    value={el._id}
-                    id={el._id}
-                  >
+                  <button onClick={this.showComments} value={el._id} id={ind}>
                     show comments
                   </button>
+                  <div id={el._id + ind} />
                 </div>
                 <br />
               </div>
