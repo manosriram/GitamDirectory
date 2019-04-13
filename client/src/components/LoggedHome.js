@@ -7,20 +7,36 @@ class LoggedHome extends React.Component {
     status: "",
     feedData: [],
     comment: "",
-    showComments: false
+    showComments: false,
+    showing: false
   };
 
   showComments = async e => {
-    const resp1 = await fetch("/feed/grabComments", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ postID: e.target.value })
-    });
-    const resp2 = await resp1.json();
-    console.log(resp2);
+    var div_ = document.getElementById(e.target.id);
+    this.setState({ showing: !this.state.showing });
+
+    if (this.state.showing === true) {
+      div_.innerHTML = "";
+      return;
+    } else {
+      console.log(e.target.id);
+      const resp1 = await fetch("/feed/grabComments", {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ postID: e.target.value })
+      });
+      const resp2 = await resp1.json();
+
+      resp2.postComments.map((el, ind) => {
+        div_.innerHTML += "<br/>";
+        div_.innerHTML += el.mainBody;
+        div_.innerHTML += "<br/>";
+      });
+      return;
+    }
   };
 
   submitComment = async e => {
@@ -137,7 +153,12 @@ class LoggedHome extends React.Component {
                     submit
                   </button>
                   <br />
-                  <button onClick={this.showComments} value={el._id} id="show">
+                  <div id={ind} />
+                  <button
+                    onClick={this.showComments}
+                    value={el._id}
+                    id={el._id}
+                  >
                     show comments
                   </button>
                 </div>
