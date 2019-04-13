@@ -1,3 +1,4 @@
+import SearchProfile from "./SearchProfile";
 import React from "react";
 import "./loggedHome.css";
 const moment = require("moment");
@@ -9,6 +10,10 @@ class LoggedHome extends React.Component {
     comment: "",
     showComments: false,
     showing: false
+  };
+
+  getUser = () => {
+    console.log("userData");
   };
 
   showComments = async e => {
@@ -29,10 +34,15 @@ class LoggedHome extends React.Component {
         body: JSON.stringify({ postID: e.target.value })
       });
       const resp2 = await resp1.json();
-      console.log(resp2);
       resp2.postComments.map((el, ind) => {
+        console.log(el);
         div_.innerHTML += "<br/>";
-        div_.innerHTML += `<a onClick=${this.getUser}>${el.byName}</a>`;
+
+        var a = document.createElement("a");
+        a.text = el.byName;
+        a.setAttribute("id", ind);
+        div_.append(a);
+
         div_.innerHTML += "   :   ";
         div_.innerHTML += el.mainBody;
         div_.innerHTML += "<br/>";
@@ -155,9 +165,16 @@ class LoggedHome extends React.Component {
                     submit
                   </button>
                   <br />
-                  <button onClick={this.showComments} value={el._id} id={ind}>
-                    show comments
-                  </button>
+                  {this.state.showing && (
+                    <button onClick={this.showComments} value={el._id} id={ind}>
+                      hide comments
+                    </button>
+                  )}
+                  {!this.state.showing && (
+                    <button onClick={this.showComments} value={el._id} id={ind}>
+                      show comments
+                    </button>
+                  )}
                   <div id={el._id + ind} />
                 </div>
                 <br />

@@ -125,6 +125,7 @@ class SearchProfile extends React.Component {
             if (this.state.active === true) {
               data = post.body;
             }
+
             var ago = moment(post.timestamp).fromNow();
             return (
               <div>

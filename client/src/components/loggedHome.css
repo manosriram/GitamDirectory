@@ -183,6 +183,11 @@ a {
   background: transparent;
 }
 
+#nameLink {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 @media screen and (max-height: 450px) {
   .sidenav {
     padding-top: 15px;
