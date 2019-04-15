@@ -16,9 +16,9 @@ Contributor : A.Mano Sriram
 - When logged In, They can see their Feed which shows all the posts from the users they have been Following.
 - Every post shows the time past it was posted. Eg. (3 hours ago.)
 - Search an User or also view the list of all users registered in the network.
+- Comments section where anyone can comment on that respective post.
 
 2. **Developing Stage**
 
-- Comments section where anyone can comment on that respective post.
 - Upvote or Downvote where anyone can Upvote or Downvote Post Content.
 - Addition of Profile Pic.
