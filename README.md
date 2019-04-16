@@ -1,10 +1,10 @@
-# Student-Teacher Directory.
+# University Directory.
 
 ``` 
 Contributor : A.Mano Sriram
 ```
 
-#### Gitam Directory is a Mini-Social Network where Students/Teachers (Users) can Create a profile and Connect between them.
+#### University Directory is a Mini-Social Network where Students/Teachers (Users) can Create a profile and Connect between them.
 
 #### You can Register if you don't have an Account or Just Login.
 
