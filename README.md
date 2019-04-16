@@ -1,4 +1,4 @@
-# Gitam Directory.
+# Student-Teacher Directory.
 
 ``` 
 Contributor : A.Mano Sriram
